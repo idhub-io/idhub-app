@@ -14,7 +14,21 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@components": ["src/app/components"],
+      "@components/*": ["src/app/components/*"],
+      "@models": ["src/app/models"],
+      "@models/*": ["src/app/models/*"],
+      "@store": ["src/app/store"],
+      "@store/*": ["src/app/store/*"],
+      "@services": ["src/app/services"],
+      "@services/*": ["src/app/services/*"],
+      "@pages": ["src/app/pages"],
+      "@pages/*": ["src/app/pages/*"],
+      "@environments": ["src/environments"],
+      "@environments/*": ["src/environments/*"]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
