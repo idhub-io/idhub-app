@@ -45,3 +45,17 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+
+      - name: Deploy
+        uses: qcastel/github-actions-trigger-deploy@master
+        with:
+          git-release-bot-name: "bot-idhub"
+          git-release-bot-email: "bot@idhub.io"
+
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_FOR_DEPLOY }}
+
+          repository: git@github.com:idhub-io/idhub-deployment.git
+
+          images-names: "idhub-app"
+
+          version: ${{ steps.tag_version.outputs.new_tag }}
