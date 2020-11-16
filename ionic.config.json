@@ -1,0 +1,7 @@
+{
+  "name": "idhub",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
