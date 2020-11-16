@@ -1,0 +1,35 @@
+name: publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    name: Publish binaries
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          repository: yapily/jose-gitops-key-rotation
+          tag_with_ref: true
+          tag_with_sha: true
+      - name: Deploy
+        uses: qcastel/github-actions-trigger-deploy@master
+        with:
+          git-release-bot-name: "bot-idhub"
+          git-release-bot-email: "bot@idhub.io"
+
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_FOR_DEPLOY }}
+
+          repository: git@github.com:idhub-io/idhub-deployment.git
+
+          images-names: "idhub-app"
+
+
+
