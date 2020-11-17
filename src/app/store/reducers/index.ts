@@ -1,16 +1,14 @@
-import {
-  ActionReducer,
-  ActionReducerMap,
-  createFeatureSelector,
-  createSelector,
-  MetaReducer,
-} from '@ngrx/store';
+import { ActionReducerMap, MetaReducer } from '@ngrx/store';
+
 import { environment } from '@environments/environment';
+import userReducer from './user';
+import { IState } from '@models';
 
-export interface State {}
+export const rootReducers: ActionReducerMap<IState> = {
+  user: userReducer,
+};
+console.log({ rootReducers });
 
-export const rootReducers: ActionReducerMap<State> = {};
-
-export const middlewares: MetaReducer<State>[] = !environment.production
+export const middlewares: MetaReducer<IState>[] = !environment.production
   ? []
   : [];

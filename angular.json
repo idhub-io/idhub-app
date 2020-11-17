@@ -74,7 +74,11 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "app:build"
+            "browserTarget": "app:build",
+            "host": "sandbox.idhub.openbanking4.dev",
+            "ssl": true,
+            "sslCert": "ssl/localhost.crt",
+            "sslKey": "ssl/localhost.key"
           },
           "configurations": {
             "production": {
@@ -126,9 +130,7 @@
               "tsconfig.spec.json",
               "cypress/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {

@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-
+import { OAuthModule } from 'angular-oauth2-oidc';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,16 +24,20 @@ import { rootEffects } from '@store/effects';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    StoreModule.forRoot({}, {}),
-    !environment.production
-      ? StoreDevtoolsModule.instrument({
-          maxAge: 25,
-          logOnly: environment.production,
-        })
-      : [],
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
     EffectsModule.forRoot(rootEffects),
     StoreRouterConnectingModule.forRoot(),
     StoreModule.forRoot(rootReducers, { metaReducers: middlewares }),
+    HttpClientModule,
+    OAuthModule.forRoot({
+      resourceServer: {
+        allowedUrls: ['https://api.idhub.openbanking4.dev'],
+        sendAccessToken: true,
+      },
+    }),
   ],
   providers: [
     StatusBar,
