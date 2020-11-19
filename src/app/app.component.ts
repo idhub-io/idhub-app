@@ -85,25 +85,20 @@ export class AppComponent implements OnInit {
 
   async initializeApp() {
     await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-    this.platform.ready().then(async () => {
-      this.pwa.init();
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      // console.log({ authCodeFlowConfig });
-      // await this.oauthService.loadDiscoveryDocumentAndLogin();
-      // await this.oauthService.initLoginFlow();
-      // const token = this.oauthService.hasValidAccessToken();
-      // console.log({ token });
-      // await this.oauthService.loadDiscoveryDocumentAndLogin();
-      try {
-        const user = <IUser>await this.oauthService.loadUserProfile();
-        // this.oauthService.setupAutomaticSilentRefresh();
+    await this.platform.ready();
 
+    this.pwa.init();
+    this.statusBar.styleDefault();
+    this.splashScreen.hide();
+    try {
+      const token = this.oauthService.hasValidAccessToken();
+      if (token) {
+        const user = <IUser>await this.oauthService.loadUserProfile();
         this.store.dispatch(LoginSuccessAction({ user }));
-      } catch (error) {
-        console.log({ error });
       }
-    });
+    } catch (error) {
+      console.log({ error });
+    }
   }
 
   ngOnInit() {

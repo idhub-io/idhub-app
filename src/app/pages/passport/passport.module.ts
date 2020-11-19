@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 import { PassportRoutingModule } from './passport-routing.module';
 import { PassportPage } from './passport.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { PassportComponent } from './passport.component';
+import { PassportClaimsComponent } from './claims.component';
 
 @NgModule({
   imports: [
@@ -15,6 +17,6 @@ import { ComponentsModule } from 'src/app/components/components.module';
     ComponentsModule,
     PassportRoutingModule,
   ],
-  declarations: [PassportPage],
+  declarations: [PassportPage, PassportComponent, PassportClaimsComponent],
 })
 export class PassportPageModule {}
