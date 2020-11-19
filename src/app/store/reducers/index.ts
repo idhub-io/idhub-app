@@ -7,7 +7,6 @@ import { IState } from '@models';
 export const rootReducers: ActionReducerMap<IState> = {
   user: userReducer,
 };
-console.log({ rootReducers });
 
 export const middlewares: MetaReducer<IState>[] = !environment.production
   ? []

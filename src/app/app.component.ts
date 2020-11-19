@@ -5,7 +5,8 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Store } from '@ngrx/store';
-import { IState } from '@models';
+import { IState, IUser } from '@models';
+import { LoginSuccessAction } from '@store/reducers/user';
 
 export const authCodeFlowConfig: AuthConfig = {
   issuer: 'https://iam.idhub.openbanking4.dev/auth/realms/external',
@@ -86,9 +87,8 @@ export class AppComponent implements OnInit {
       this.oauthService.configure(authCodeFlowConfig);
       this.oauthService.events.subscribe((test) => console.log({ test }));
       await this.oauthService.loadDiscoveryDocumentAndLogin();
-      const user = await this.oauthService.loadUserProfile();
-      console.log(JSON.stringify(user));
-      this.store.subscribe();
+      const user = <IUser>await this.oauthService.loadUserProfile();
+      this.store.dispatch(LoginSuccessAction({ user }));
     });
   }
 

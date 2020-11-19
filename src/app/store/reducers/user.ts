@@ -4,8 +4,9 @@ import { IState, IUser, IUserState } from '@models';
 export const LoginRequestAction = createAction('LOGIN_REQUEST');
 export const LoginSuccessAction = createAction(
   'LOGIN_SUCCESS',
-  props<{ user: IUser[] }>(),
+  props<{ user: IUser }>(),
 );
+export const LogoutSuccessAction = createAction('LOGOUT_SUCCESS');
 export type ActionsUnion =
   | typeof LoginRequestAction
   | typeof LoginSuccessAction;
@@ -20,7 +21,7 @@ export const LoginReducer = createReducer(
     ...state,
     user,
   })),
-  // on(logoutAction, () => initialState),
+  on(LogoutSuccessAction, () => initialState),
 );
 
 export default LoginReducer;
