@@ -1,19 +1,34 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { LoginGuard } from './login-gard';
+import { OIDCGuard } from './oidc-gard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'passports',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
-    path: 'passports',
+    path: '',
+    canActivate: [OIDCGuard],
+    children: [
+      {
+        path: 'passports',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/passports/passports.module').then(
+            (m) => m.PassportsPageModule,
+          ),
+      },
+    ],
+  },
+  {
+    path: 'login',
     pathMatch: 'full',
+    canActivate: [LoginGuard],
     loadChildren: () =>
-      import('./pages/passports/passports.module').then(
-        (m) => m.PassportsPageModule,
-      ),
+      import('./pages/login/login.module').then((m) => m.LoginPageModule),
   },
   {
     path: 'passport',

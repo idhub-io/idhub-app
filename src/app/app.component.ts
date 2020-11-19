@@ -11,7 +11,7 @@ import { LoginSuccessAction } from '@store/reducers/user';
 export const authCodeFlowConfig: AuthConfig = {
   issuer: 'https://iam.idhub.openbanking4.dev/auth/realms/external',
 
-  redirectUri: window.location.origin + '/',
+  redirectUri: window.location.origin + '/login',
   //  window.location.origin + '/exchange-code',
   // The SPA's id. The SPA is registerd with this id at the auth-server
   // clientId: 'server.code',
@@ -76,19 +76,30 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store<IState>,
   ) {
+    this.oauthService.configure(authCodeFlowConfig);
+    this.oauthService.events.subscribe((test) => console.log({ test }));
     this.initializeApp();
   }
 
-  initializeApp() {
+  async initializeApp() {
+    await this.oauthService.loadDiscoveryDocumentAndTryLogin();
     this.platform.ready().then(async () => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      console.log({ authCodeFlowConfig });
-      this.oauthService.configure(authCodeFlowConfig);
-      this.oauthService.events.subscribe((test) => console.log({ test }));
-      await this.oauthService.loadDiscoveryDocumentAndLogin();
-      const user = <IUser>await this.oauthService.loadUserProfile();
-      this.store.dispatch(LoginSuccessAction({ user }));
+      // console.log({ authCodeFlowConfig });
+      // await this.oauthService.loadDiscoveryDocumentAndLogin();
+      // await this.oauthService.initLoginFlow();
+      // const token = this.oauthService.hasValidAccessToken();
+      // console.log({ token });
+      // await this.oauthService.loadDiscoveryDocumentAndLogin();
+      try {
+        const user = <IUser>await this.oauthService.loadUserProfile();
+        // this.oauthService.setupAutomaticSilentRefresh();
+
+        this.store.dispatch(LoginSuccessAction({ user }));
+      } catch (error) {
+        console.log({ error });
+      }
     });
   }
 
