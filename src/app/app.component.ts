@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Store } from '@ngrx/store';
 import { IState, IUser } from '@models';
 import { LoginSuccessAction } from '@store/reducers/user';
+import { PWAService } from '@services/pwa.service';
 
 export const authCodeFlowConfig: AuthConfig = {
   issuer: 'https://iam.idhub.openbanking4.dev/auth/realms/external',
@@ -75,6 +76,7 @@ export class AppComponent implements OnInit {
     private oauthService: OAuthService,
     private route: ActivatedRoute,
     private store: Store<IState>,
+    private pwa: PWAService,
   ) {
     this.oauthService.configure(authCodeFlowConfig);
     this.oauthService.events.subscribe((test) => console.log({ test }));
@@ -84,6 +86,7 @@ export class AppComponent implements OnInit {
   async initializeApp() {
     await this.oauthService.loadDiscoveryDocumentAndTryLogin();
     this.platform.ready().then(async () => {
+      this.pwa.init();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       // console.log({ authCodeFlowConfig });
