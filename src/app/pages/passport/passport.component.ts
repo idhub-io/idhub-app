@@ -19,12 +19,19 @@ import { IPassport } from '@models';
         <span style="flex:1;"></span>
         <span>{{ passport.providerId }}</span>
       </div>
-      <div class="banner-img">
+      <div
+        class="banner-img"
+        [ngClass]="{
+          hasAvatar: getClaim('pictureUri') || getClaim('avatar_url')
+        }"
+      >
         <img
           src="assets/passports/providers/{{ passport.providerId }}.png"
           (error)="errorImg($event)"
         />
-        <ion-avatar *ngIf="getClaim('pictureUri') as claim">
+        <ion-avatar
+          *ngIf="getClaim('pictureUri') || getClaim('avatar_url') as claim"
+        >
           <img [src]="claim.value" />
         </ion-avatar>
       </div>
@@ -43,7 +50,7 @@ import { IPassport } from '@models';
         display: block;
       }
       ion-card {
-        max-width: 680px;
+        max-width: 500px;
       }
       .provider-header {
         display: flex;
@@ -61,8 +68,12 @@ import { IPassport } from '@models';
       }
       .banner-img {
         position: relative;
+        margin-bottom: 0px;
+      }
+      .banner-img.hasAvatar {
         margin-bottom: 50px;
       }
+
       .banner-img ion-avatar {
         position: absolute;
         bottom: -50px;
@@ -115,12 +126,19 @@ export class PassportComponent implements OnInit, OnChanges {
           ].includes(claim.id),
         ),
       });
-      this.claimsGroup.push({
-        title: 'Contact',
-        claims: passport.claims.filter((claim) =>
-          ['phone_number', 'email'].includes(claim.id),
-        ),
-      });
+
+      const hasContacts = passport.claims.filter((claim) =>
+        ['phone_number', 'email'].includes(claim.id),
+      ).length;
+
+      if (hasContacts) {
+        this.claimsGroup.push({
+          title: 'Contact',
+          claims: passport.claims.filter((claim) =>
+            ['phone_number', 'email'].includes(claim.id),
+          ),
+        });
+      }
 
       switch (passport.providerId) {
         case 'github':
@@ -154,7 +172,9 @@ export class PassportComponent implements OnInit, OnChanges {
           if (address) {
             this.claimsGroup.push({
               title: 'Address',
-              claims: address.values,
+              claims: address.values.filter(
+                (claim) => !['formatted', 'region'].includes(claim.id),
+              ),
             });
           }
           this.claimsGroup.push({
