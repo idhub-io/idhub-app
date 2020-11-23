@@ -15,4 +15,4 @@ CN = localhost_idhub
 [v3_req]
 subjectAltName = @alt_names
 [alt_names]
-DNS.1 = sandbox.idhub.openbanking4.dev
+DNS.1 = sandbox.idhub.io

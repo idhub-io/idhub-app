@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 // const authCodeFlowConfig: AuthConfig = {
-//   issuer: 'https://iam.idhub.openbanking4.dev/auth/realms/external',
+//   issuer: 'https://iam.idhub.io/auth/realms/external',
 
 //   redirectUri: window.location.origin + '/login',
 //   //  window.location.origin + '/exchange-code',

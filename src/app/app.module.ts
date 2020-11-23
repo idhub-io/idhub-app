@@ -40,7 +40,7 @@ console.log({ environment });
     HttpClientModule,
     OAuthModule.forRoot({
       resourceServer: {
-        allowedUrls: ['https://api.idhub.openbanking4.dev'],
+        allowedUrls: ['https://api.idhub.io'],
         sendAccessToken: true,
       },
     }),
