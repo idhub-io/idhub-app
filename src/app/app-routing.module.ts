@@ -21,6 +21,14 @@ const routes: Routes = [
             (m) => m.PassportsPageModule,
           ),
       },
+      {
+        path: 'wallet',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/wallet/wallet.module').then(
+            (m) => m.WalletPageModule,
+          ),
+      },
     ],
   },
   {

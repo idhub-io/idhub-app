@@ -4,8 +4,19 @@ export type IPassportProviderId =
   | 'github'
   | 'gitlab'
   | 'linkedin'
+  | 'facebook'
+  | 'eventbrite'
+  | 'meetup'
+  | 'microsoft'
   | 'awesome-company';
 
+export interface IPassportListItem {
+  id: string;
+  userId: string;
+  providerId: IPassportProviderId;
+  exp: number;
+  iat: number;
+}
 export interface IPassport {
   id: string;
   providerToken?: string;

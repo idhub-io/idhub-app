@@ -9,15 +9,16 @@ import { AccountPopover } from './account.popover';
 @Component({
   selector: 'app-toolbar',
   template: `
-    <ion-toolbar>
+    <ion-toolbar mode="md">
       <ion-buttons slot="start">
         <img src="assets/idhub.svg" />
         <!-- <ion-menu-button></ion-menu-button> -->
       </ion-buttons>
       <ion-title>idhub</ion-title>
       <ion-buttons slot="end" *ngIf="user$ | async as user">
-        <ion-button (click)="presentPopover($event)">
-          {{ user.preferred_username }}
+        <ion-button color="primary" (click)="presentPopover($event)">
+          <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+          Account
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
@@ -26,6 +27,8 @@ import { AccountPopover } from './account.popover';
     `
       img {
         width: 30px;
+      }
+      .account {
       }
     `,
   ],
