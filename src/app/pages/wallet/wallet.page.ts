@@ -79,7 +79,7 @@ const passports: IPassportListItem[] = [
     <ion-content [fullscreen]="true">
       <ion-list lines="full">
         <ion-item-sliding
-          *ngFor="let passport of passports$ | async"
+          *ngFor="let passport of passports"
           (ionSwipe)="deletePassport($event, passport)"
         >
           <ion-item>
@@ -135,7 +135,7 @@ const passports: IPassportListItem[] = [
   ],
 })
 export class WalletPage implements OnInit {
-  // passports: IPassportListItem[] = passports;
+  passports: IPassportListItem[] = passports;
   public passports$: Observable<IPassportListItem[]> = this.store.pipe(
     select(selectPassports),
   );
