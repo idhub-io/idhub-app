@@ -1,5 +1,5 @@
 import { NewPassportModal } from './new-passport.modal';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalController, AlertController } from '@ionic/angular';
 import { IPassportListItem, IProvider, IState } from '@models';
@@ -16,6 +16,7 @@ import {
   PassportsRequestAction,
 } from '@store/reducers/passports';
 import { ApiService } from '@services/api.service';
+import { PassportModal } from './passport.modal';
 
 @Component({
   selector: 'passports-page',
@@ -140,6 +141,7 @@ export class PassportsPage implements OnInit, OnDestroy {
     public modalController: ModalController,
     public alertController: AlertController,
     protected apiService: ApiService,
+    protected el: ElementRef,
   ) {}
 
   ngOnInit() {
@@ -152,7 +154,11 @@ export class PassportsPage implements OnInit, OnDestroy {
       );
 
     this.routeSubscription = this.route.fragment.subscribe((fragment) => {
-      console.log(fragment);
+      const search = new URLSearchParams(fragment);
+      const passportId = search.get('passport-id');
+      if (passportId) {
+        this.openPassport(passportId);
+      }
     });
   }
 
@@ -194,6 +200,17 @@ export class PassportsPage implements OnInit, OnDestroy {
   async createPassport() {
     const modal = await this.modalController.create({
       component: NewPassportModal,
+    });
+    return await modal.present();
+  }
+
+  async openPassport(passportId: string) {
+    const modal = await this.modalController.create({
+      component: PassportModal,
+      componentProps: {
+        passportId,
+      },
+      presentingElement: this.el.nativeElement,
     });
     return await modal.present();
   }

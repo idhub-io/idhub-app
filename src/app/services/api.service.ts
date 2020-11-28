@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment } from '@environments/environment';
-import { IProvider, IPassportListItem } from '@models';
+import { IProvider, IPassportListItem, IPassport } from '@models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -18,6 +18,15 @@ export class ApiService {
     return this.http.get<IPassportListItem[]>(
       environment.apiUrl + '/wallet/passports/',
     );
+  }
+
+  validatePassport(passportId: string) {
+    return this.http.get<{
+      passport: IPassport;
+      valid: boolean;
+      error: [];
+      rules: [];
+    }>(environment.apiUrl + `/wallet/passports/${passportId}/verify`);
   }
 
   createPassport(providerId: string) {
