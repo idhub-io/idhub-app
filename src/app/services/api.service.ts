@@ -19,4 +19,20 @@ export class ApiService {
       environment.apiUrl + '/wallet/passports/',
     );
   }
+
+  createPassport(providerId: string) {
+    return this.http.post<{ redirectUri: string }>(
+      environment.apiUrl + '/wallet/passports/',
+      {
+        callback: window.location.origin + '/passports',
+        providerId,
+      },
+    );
+  }
+
+  deletePassport(passportId: string) {
+    return this.http.delete<void>(
+      environment.apiUrl + '/wallet/passports/' + passportId,
+    );
+  }
 }

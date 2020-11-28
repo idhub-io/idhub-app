@@ -4,6 +4,8 @@ import { catchError, map, mergeMap, retry } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 import {
+  PassportDeletionRequestAction,
+  PassportDeletionSuccessAction,
   PassportsErrorAction,
   PassportsRequestAction,
   PassportsSuccessAction,
@@ -24,6 +26,25 @@ export class PassportsEffects {
         map((passports) =>
           PassportsSuccessAction({
             passports,
+          }),
+        ),
+        catchError((er: HttpErrorResponse) => {
+          console.log(er);
+          return of(PassportsErrorAction({ error: er.message }));
+        }),
+      ),
+    ),
+  );
+
+  @Effect()
+  delete$: Observable<any> = this.actions$.pipe(
+    ofType(PassportDeletionRequestAction),
+    mergeMap(({ passportId }) =>
+      this.apiService.deletePassport(passportId).pipe(
+        retry(2),
+        map(() =>
+          PassportDeletionSuccessAction({
+            passportId,
           }),
         ),
         catchError((er: HttpErrorResponse) => {

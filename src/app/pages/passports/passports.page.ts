@@ -1,16 +1,81 @@
-import { Component, OnInit } from '@angular/core';
+import { NewPassportModal } from './new-passport.modal';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ModalController, AlertController } from '@ionic/angular';
+import { IPassportListItem, IProvider, IState } from '@models';
+import { select, Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import {
+  selectError,
+  selectIsLoading,
+  selectPassports,
+} from '@store/selectors/passports.selectors';
+import { first } from 'rxjs/operators';
+import {
+  PassportDeletionRequestAction,
+  PassportsRequestAction,
+} from '@store/reducers/passports';
+import { ApiService } from '@services/api.service';
 
 @Component({
   selector: 'passports-page',
   template: `
     <ion-header [translucent]="true">
       <app-toolbar></app-toolbar>
+      <ion-searchbar
+        debounce="500"
+        (ionChange)="filter($event.detail.value)"
+      ></ion-searchbar>
     </ion-header>
 
     <ion-content [fullscreen]="true">
-      <div class="wrapper">
-        <ion-card>
+      <ng-container *ngIf="passports$ | async as passports">
+        <ion-list lines="full" *ngIf="passports.length">
+          <ion-item-sliding
+            *ngFor="let passport of passports"
+            (ionSwipe)="deletePassport($event, passport)"
+          >
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <img
+                  [src]="
+                    'assets/icons/providers/' + passport.providerId + '.svg'
+                  "
+                />
+                <!-- <ion-skeleton-text></ion-skeleton-text> -->
+              </ion-thumbnail>
+              <ion-label class="ion-text-wrap">
+                <ion-text color="primary">
+                  <h2>{{ passport.providerId | titlecase }}</h2>
+                </ion-text>
+                <ion-text>
+                  <p>Created on: {{ passport.iat * 1000 | date }}</p>
+                </ion-text>
+                <ion-text color="secondary">
+                  <p>Valid until: {{ passport.exp * 1000 | date }}</p>
+                </ion-text>
+              </ion-label>
+              <ion-chip
+                *ngIf="passport.nbSharedPassports"
+                slot="end"
+                color="primary"
+              >
+                <ion-icon name="albums-outline" color="dark"></ion-icon>
+                <ion-label>{{ passport.nbSharedPassports }}</ion-label>
+              </ion-chip>
+            </ion-item>
+            <ion-item-options side="end">
+              <ion-item-option
+                color="danger"
+                expandable
+                (click)="deletePassport($event, passport)"
+                ><ion-icon slot="start" name="trash-outline"></ion-icon>
+                Remove</ion-item-option
+              >
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+        <ion-card *ngIf="!passports.length">
           <ion-card-header>
             <ion-card-title
               >Share your passport as an electronique format.</ion-card-title
@@ -36,8 +101,13 @@ import { Router, ActivatedRoute } from '@angular/router';
               >
             </div>
           </ion-card-content>
-        </ion-card>
-      </div>
+        </ion-card></ng-container
+      >
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="createPassport()">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </ion-content>
   `,
   styles: [
@@ -52,10 +122,79 @@ import { Router, ActivatedRoute } from '@angular/router';
     `,
   ],
 })
-export class PassportsPage implements OnInit {
-  constructor(private router: Router, private route: ActivatedRoute) {}
+export class PassportsPage implements OnInit, OnDestroy {
+  // passports: IPassportListItem[] = passports;
+  public passports$: Observable<IPassportListItem[]> = this.store.pipe(
+    select(selectPassports),
+  );
+  public isLoading$: Observable<boolean> = this.store.pipe(
+    select(selectIsLoading),
+  );
+  public error$: Observable<string> = this.store.pipe(select(selectError));
+  private routeSubscription: Subscription;
+
+  constructor(
+    private router: Router,
+    protected store: Store<IState>,
+    private route: ActivatedRoute,
+    public modalController: ModalController,
+    public alertController: AlertController,
+    protected apiService: ApiService,
+  ) {}
 
   ngOnInit() {
-    console.log(this.route.snapshot.fragment);
+    this.passports$
+      .pipe(first())
+      .subscribe(
+        (providers) =>
+          providers.length <= 1 &&
+          this.store.dispatch(PassportsRequestAction()),
+      );
+
+    this.routeSubscription = this.route.fragment.subscribe((fragment) => {
+      console.log(fragment);
+    });
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
+  }
+
+  errorImg() {}
+
+  filter(value: string) {
+    console.log('eeee', value);
+  }
+
+  async deletePassport(e: Event, passport: IPassportListItem) {
+    const alert = await this.alertController.create({
+      header: 'Remove Passport',
+      message: 'Removing a passport cannot be undone. Are you sure ?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Yes',
+          handler: async () => {
+            this.store.dispatch(
+              PassportDeletionRequestAction({
+                passportId: passport.id,
+              }),
+            );
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async createPassport() {
+    const modal = await this.modalController.create({
+      component: NewPassportModal,
+    });
+    return await modal.present();
   }
 }

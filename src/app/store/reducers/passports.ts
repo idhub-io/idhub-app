@@ -14,6 +14,15 @@ export const PassportsErrorAction = createAction(
   'PASSPORTS_ERROR',
   props<{ error: string }>(),
 );
+
+export const PassportDeletionRequestAction = createAction(
+  'PASSPORTS_DELETION_REQUEST',
+  props<{ passportId: string }>(),
+);
+export const PassportDeletionSuccessAction = createAction(
+  'PASSPORTS_DELETION_SUCCESS',
+  props<{ passportId: string }>(),
+);
 export type ActionsUnion =
   | typeof PassportsRequestAction
   | typeof PassportsSuccessAction
@@ -26,16 +35,24 @@ export const initialState: IPassportsState = adapter.getInitialState({
   error: '',
 });
 
+const requestAction = (state) => ({
+  ...state,
+  isLoading: true,
+  error: '',
+});
 export const PassportsReducer = createReducer(
   initialState,
-  on(PassportsRequestAction, (state) => ({
-    ...state,
-    isLoading: true,
-    error: '',
-  })),
+  on(PassportsRequestAction, requestAction),
+  on(PassportDeletionRequestAction, requestAction),
   on(PassportsSuccessAction, (state, { passports }) => ({
     ...state,
     ...adapter.setAll(passports, state),
+    isLoading: false,
+    error: '',
+  })),
+  on(PassportDeletionSuccessAction, (state, { passportId }) => ({
+    ...state,
+    ...adapter.removeOne(passportId, state),
     isLoading: false,
     error: '',
   })),
