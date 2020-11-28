@@ -46,11 +46,31 @@ export class ApiService {
 
   sharePassport(passportId: string, claims: string[], expirationDelta: number) {
     return this.http.post<ISharedPassportListItem>(
-      environment.apiUrl + `/wallet/passports/${passportId}/shared`,
+      environment.apiUrl + `/wallet/passports/${passportId}/shared/`,
       {
         claims,
         expirationDelta,
       },
+    );
+  }
+
+  getSharedPassports(passportId: string) {
+    return this.http.get<ISharedPassportListItem[]>(
+      environment.apiUrl + `/wallet/passports/${passportId}/shared/`,
+    );
+  }
+
+  getSharedPassport(passportId: string, sharedPassportId: string) {
+    return this.http.get<ISharedPassportListItem>(
+      environment.apiUrl +
+        `/wallet/passports/${passportId}/shared/${sharedPassportId}`,
+    );
+  }
+
+  deleteSharedPassport(passportId: string, sharedPassportId: string) {
+    return this.http.delete<void>(
+      environment.apiUrl +
+        `/wallet/passports/${passportId}/shared/${sharedPassportId}`,
     );
   }
 

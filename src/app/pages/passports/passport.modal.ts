@@ -11,7 +11,7 @@ import { ApiService } from '@services/api.service';
       <ion-toolbar>
         <ion-buttons slot="end">
           <ion-button (click)="dismiss()" size="large"
-            ><ion-icon name="close-outline" color="light"></ion-icon
+            ><ion-icon name="close"></ion-icon
           ></ion-button>
         </ion-buttons>
       </ion-toolbar>

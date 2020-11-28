@@ -26,7 +26,9 @@ export const PassportDeletionSuccessAction = createAction(
 export type ActionsUnion =
   | typeof PassportsRequestAction
   | typeof PassportsSuccessAction
-  | typeof PassportsErrorAction;
+  | typeof PassportsErrorAction
+  | typeof PassportDeletionRequestAction
+  | typeof PassportDeletionSuccessAction;
 
 export const adapter: EntityAdapter<IPassportListItem> = createEntityAdapter<IPassportListItem>();
 

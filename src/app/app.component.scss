@@ -130,6 +130,12 @@ ion-item.selected {
   ion-header::after {
     background-image: none;
   }
+  ion-backdrop {
+    opacity: 0.7;
+  }
+  .modal-shadow {
+    box-shadow: none !important;
+  }
   ion-toolbar {
     --box-shadow: none;
     --color: white;
@@ -138,7 +144,7 @@ ion-item.selected {
       font-size: 2em;
     }
     ion-icon {
-      color: red;
+      color: white;
     }
   }
 }

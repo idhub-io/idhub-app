@@ -22,6 +22,7 @@ import {
 import { ApiService } from '@services/api.service';
 import { PassportModal } from './passport.modal';
 import { SharePassportModal } from './share.modal';
+import { SharedPassportsModal } from './shared-passports.modal';
 
 @Component({
   selector: 'passports-page',
@@ -226,20 +227,44 @@ export class PassportsPage implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  async openPassport(passportId: string) {
+  async getSharedPassports(passport: IPassportListItem) {
     const modal = await this.modalController.create({
-      component: PassportModal,
-      cssClass: 'transparent-modal',
+      component: SharedPassportsModal,
       componentProps: {
-        passportId,
+        passport,
       },
       presentingElement: this.el.nativeElement,
     });
     return await modal.present();
   }
 
+  async openPassport(passportId: string) {
+    const modal = await this.modalController.create({
+      component: PassportModal,
+      cssClass: 'transparent-modal',
+      swipeToClose: true,
+      componentProps: {
+        passportId,
+      },
+      presentingElement: this.el.nativeElement,
+    });
+    await modal.present();
+    await modal.onWillDismiss();
+    this.router.navigate(['/passports']);
+  }
+
   async presentActionSheet(passport: IPassportListItem) {
     const buttons = [
+      {
+        text: 'Open',
+        icon: 'mail-open',
+        handler: () => {
+          console.log('Share clicked');
+          this.router.navigate(['/passports'], {
+            fragment: `passport-id=${passport.id}`,
+          });
+        },
+      },
       {
         text: 'Share Passport',
         icon: 'share',
@@ -254,7 +279,7 @@ export class PassportsPage implements OnInit, OnDestroy {
         text: `Browse shared passwords (${passport.nbSharedPassports})`,
         icon: 'albums-outline',
         handler: () => {
-          console.log('Play clicked');
+          this.getSharedPassports(passport);
         },
       });
     }

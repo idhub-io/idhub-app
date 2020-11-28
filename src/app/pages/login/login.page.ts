@@ -2,26 +2,6 @@ import { OAuthService, AuthConfig } from 'angular-oauth2-oidc';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-// const authCodeFlowConfig: AuthConfig = {
-//   issuer: 'https://iam.idhub.io/auth/realms/external',
-
-//   redirectUri: window.location.origin + '/login',
-//   //  window.location.origin + '/exchange-code',
-//   // The SPA's id. The SPA is registerd with this id at the auth-server
-//   // clientId: 'server.code',
-//   clientId: 'idhub-app',
-
-//   // Just needed if your auth server demands a secret. In general, this
-//   // is a sign that the auth server is not configured with SPAs in mind
-//   // and it might not enforce further best practices vital for security
-//   // such applications.
-//   // dummyClientSecret: 'secret',
-//   responseType: 'code',
-//   scope: 'openid wallet passport',
-//   useSilentRefresh: true,
-//   showDebugInformation: true,
-// };
-
 @Component({
   selector: 'passport-page',
   template: `

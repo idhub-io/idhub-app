@@ -9,6 +9,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
 import { NewPassportModal } from './new-passport.modal';
 import { PassportModal } from './passport.modal';
 import { SharePassportModal } from './share.modal';
+import { SharedPassportsModal } from './shared-passports.modal';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,6 +25,7 @@ import { SharePassportModal } from './share.modal';
     NewPassportModal,
     PassportModal,
     SharePassportModal,
+    SharedPassportsModal,
   ],
 })
 export class PassportsPageModule {}

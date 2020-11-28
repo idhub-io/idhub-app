@@ -84,6 +84,20 @@ import { IPassport } from '@models';
         width: 100px;
         border: 2px solid white;
       }
+      :host ::ng-deep ion-item {
+        --padding-start: 0;
+      }
+      :host ::ng-deep ion-card-header {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      :host ::ng-deep ion-thumbnail {
+        width: 30px;
+        height: 30px;
+      }
+      ion-card-content {
+        padding: 0.9em;
+      }
     `,
   ],
 })
@@ -154,12 +168,17 @@ export class PassportComponent implements OnInit, OnChanges {
           if (orgs) {
             this.claimsGroup.push({
               title: 'Organisations',
-              claims: orgs.values.map((org) => ({
-                id: org.id,
-                value: org.values.find((value) => value.id === 'name').value,
-                img: org.values.find((value) => value.id === 'avatar_url')
-                  .value,
-              })),
+              claims: orgs.values.map((org) => {
+                const name = org.values.find((value) => value.id === 'name');
+                const img = org.values.find(
+                  (value) => value.id === 'avatar_url',
+                );
+                return {
+                  id: org.id,
+                  value: name ? name.value : org.id,
+                  img: img ? img.value : undefined,
+                };
+              }),
             });
           }
           break;
