@@ -2,7 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment } from '@environments/environment';
-import { IProvider, IPassportListItem, IPassport } from '@models';
+import {
+  IProvider,
+  IPassportListItem,
+  IPassport,
+  ISharedPassportListItem,
+} from '@models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -35,6 +40,16 @@ export class ApiService {
       {
         callback: window.location.origin + '/passports',
         providerId,
+      },
+    );
+  }
+
+  sharePassport(passportId: string, claims: string[], expirationDelta: number) {
+    return this.http.post<ISharedPassportListItem>(
+      environment.apiUrl + `/wallet/passports/${passportId}/shared`,
+      {
+        claims,
+        expirationDelta,
       },
     );
   }

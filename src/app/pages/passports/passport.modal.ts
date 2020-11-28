@@ -1,20 +1,7 @@
 import { ModalController } from '@ionic/angular';
-import {
-  Component,
-  ChangeDetectionStrategy,
-  OnInit,
-  Input,
-} from '@angular/core';
-import { IPassport, IProvider, IState } from '@models';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import {
-  selectError,
-  selectIsLoading,
-  selectProviders,
-} from '@store/selectors/providers.selectors';
-import { first } from 'rxjs/operators';
-import { ProvidersRequestAction } from '@store/reducers/providers';
+import { Component, OnInit, Input } from '@angular/core';
+import { IPassport, IState } from '@models';
+import { Store } from '@ngrx/store';
 import { ApiService } from '@services/api.service';
 
 @Component({
@@ -22,20 +9,23 @@ import { ApiService } from '@services/api.service';
   template: `
     <ion-header>
       <ion-toolbar>
-        <ion-title>{{ passport.providerId | titlecase }}</ion-title>
         <ion-buttons slot="end">
-          <ion-button (click)="dismiss()"
-            ><ion-icon name="close-outline"></ion-icon
+          <ion-button (click)="dismiss()" size="large"
+            ><ion-icon name="close-outline" color="light"></ion-icon
           ></ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content fullscreen>
-      <app-passport *ngIf="passport" [passport]="passport"></app-passport>
+    <ion-content>
+      <app-passport
+        class="ion-margin"
+        *ngIf="passport"
+        [passport]="passport"
+      ></app-passport>
     </ion-content>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
       .providers ion-button {

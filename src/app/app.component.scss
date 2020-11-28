@@ -117,3 +117,28 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
+.transparent-modal {
+  --background: transparent;
+  ion-content::part(background),
+  ion-toolbar {
+    --background: transparent;
+  }
+  .modal-wrapper {
+    --box-shadow: none;
+  }
+  ion-header::after {
+    background-image: none;
+  }
+  ion-toolbar {
+    --box-shadow: none;
+    --color: white;
+    --border-width: 0;
+    ion-button {
+      font-size: 2em;
+    }
+    ion-icon {
+      color: red;
+    }
+  }
+}

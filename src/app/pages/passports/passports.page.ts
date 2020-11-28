@@ -1,8 +1,12 @@
 import { NewPassportModal } from './new-passport.modal';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ModalController, AlertController } from '@ionic/angular';
-import { IPassportListItem, IProvider, IState } from '@models';
+import {
+  ModalController,
+  AlertController,
+  ActionSheetController,
+} from '@ionic/angular';
+import { IPassportListItem, IPassport, IState } from '@models';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import {
@@ -17,6 +21,7 @@ import {
 } from '@store/reducers/passports';
 import { ApiService } from '@services/api.service';
 import { PassportModal } from './passport.modal';
+import { SharePassportModal } from './share.modal';
 
 @Component({
   selector: 'passports-page',
@@ -34,9 +39,9 @@ import { PassportModal } from './passport.modal';
         <ion-list lines="full" *ngIf="passports.length">
           <ion-item-sliding
             *ngFor="let passport of passports"
-            (ionSwipe)="deletePassport($event, passport)"
+            (ionSwipe)="deletePassport(passport)"
           >
-            <ion-item>
+            <ion-item (click)="presentActionSheet(passport)">
               <ion-thumbnail slot="start">
                 <img
                   [src]="
@@ -69,7 +74,7 @@ import { PassportModal } from './passport.modal';
               <ion-item-option
                 color="danger"
                 expandable
-                (click)="deletePassport($event, passport)"
+                (click)="deletePassport(passport)"
                 ><ion-icon slot="start" name="trash-outline"></ion-icon>
                 Remove</ion-item-option
               >
@@ -96,19 +101,21 @@ import { PassportModal } from './passport.modal';
             <div class="ion-text-center">
               <img class="passport" src="assets/passport.svg" />
             </div>
-            <div class="ion-text-center">
-              <ion-button color="secondary"
-                >Generate your digital passport</ion-button
-              >
-            </div>
           </ion-card-content>
-        </ion-card></ng-container
-      >
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button (click)="createPassport()">
-          <ion-icon name="add-outline"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
+        </ion-card>
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+          <ion-button
+            *ngIf="!passports.length"
+            color="primary"
+            class="first-time"
+            (click)="createPassport()"
+            >Generate your digital passport
+            <ion-icon slot="end" name="add-outline"></ion-icon
+          ></ion-button>
+          <ion-fab-button *ngIf="passports.length" (click)="createPassport()">
+            <ion-icon name="add-outline"></ion-icon>
+          </ion-fab-button> </ion-fab
+      ></ng-container>
     </ion-content>
   `,
   styles: [
@@ -119,6 +126,9 @@ import { PassportModal } from './passport.modal';
       }
       .passport {
         width: 150px;
+      }
+      ion-button.first-time {
+        --border-radius: 30px;
       }
     `,
   ],
@@ -140,6 +150,7 @@ export class PassportsPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public modalController: ModalController,
     public alertController: AlertController,
+    public actionSheetController: ActionSheetController,
     protected apiService: ApiService,
     protected el: ElementRef,
   ) {}
@@ -172,7 +183,7 @@ export class PassportsPage implements OnInit, OnDestroy {
     console.log('eeee', value);
   }
 
-  async deletePassport(e: Event, passport: IPassportListItem) {
+  async deletePassport(passport: IPassportListItem) {
     const alert = await this.alertController.create({
       header: 'Remove Passport',
       message: 'Removing a passport cannot be undone. Are you sure ?',
@@ -204,14 +215,68 @@ export class PassportsPage implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  async openPassport(passportId: string) {
+  async sharePassport(passportId: string) {
     const modal = await this.modalController.create({
-      component: PassportModal,
+      component: SharePassportModal,
       componentProps: {
         passportId,
       },
       presentingElement: this.el.nativeElement,
     });
     return await modal.present();
+  }
+
+  async openPassport(passportId: string) {
+    const modal = await this.modalController.create({
+      component: PassportModal,
+      cssClass: 'transparent-modal',
+      componentProps: {
+        passportId,
+      },
+      presentingElement: this.el.nativeElement,
+    });
+    return await modal.present();
+  }
+
+  async presentActionSheet(passport: IPassportListItem) {
+    const buttons = [
+      {
+        text: 'Share Passport',
+        icon: 'share',
+        handler: () => {
+          console.log('Share clicked');
+          this.sharePassport(passport.id);
+        },
+      },
+    ];
+    if (passport.nbSharedPassports > 0) {
+      buttons.push({
+        text: `Browse shared passwords (${passport.nbSharedPassports})`,
+        icon: 'albums-outline',
+        handler: () => {
+          console.log('Play clicked');
+        },
+      });
+    }
+    const actionSheet = await this.actionSheetController.create({
+      header: `Passport ${passport.providerId}`,
+      buttons: [
+        ...buttons,
+        {
+          text: 'Delete',
+          role: 'destructive',
+          icon: 'trash',
+          handler: () => {
+            this.deletePassport(passport);
+          },
+        },
+        {
+          text: 'Cancel',
+          icon: 'close',
+          role: 'cancel',
+        },
+      ],
+    });
+    await actionSheet.present();
   }
 }

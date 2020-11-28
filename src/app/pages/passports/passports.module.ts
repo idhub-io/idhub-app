@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { PassportRoutingModule } from './passports-routing.module';
@@ -8,6 +8,7 @@ import { PassportsPage } from './passports.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { NewPassportModal } from './new-passport.modal';
 import { PassportModal } from './passport.modal';
+import { SharePassportModal } from './share.modal';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,7 +16,14 @@ import { PassportModal } from './passport.modal';
     IonicModule,
     ComponentsModule,
     PassportRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
-  declarations: [PassportsPage, NewPassportModal, PassportModal],
+  declarations: [
+    PassportsPage,
+    NewPassportModal,
+    PassportModal,
+    SharePassportModal,
+  ],
 })
 export class PassportsPageModule {}

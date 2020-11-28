@@ -18,6 +18,13 @@ export interface IPassportListItem {
   exp: number;
   iat: number;
 }
+export interface ISharedPassportListItem {
+  id: string;
+  providerId: IPassportProviderId;
+  claims: string[];
+  exp: number;
+  iat: number;
+}
 export interface IPassport {
   id: string;
   providerToken?: string;
