@@ -8,6 +8,7 @@ import differenceInMinutes from 'date-fns/differenceInMinutes';
 import { IPassport, IState } from '@models';
 import { ApiService } from '@services/api.service';
 import { translationMap } from 'src/app/utils/claims';
+import { SharedPassportCreationRequestAction } from '@store/reducers/shared-passports';
 
 @Component({
   selector: 'new-passport-modal',
@@ -110,13 +111,14 @@ export class SharePassportModal implements OnInit {
       .filter((claim) => claim.checked)
       .map((claim) => claim.id);
 
-    await this.apiService
-      .sharePassport(
-        this.passportId,
-        filteredClaims,
-        differenceInMinutes(new Date(date), new Date()),
-      )
-      .toPromise();
+    this.store.dispatch(
+      SharedPassportCreationRequestAction({
+        claims: filteredClaims,
+        passportId: this.passportId,
+        timeInMin: differenceInMinutes(new Date(date), new Date()),
+      }),
+    );
+
     this.dismiss();
   }
 

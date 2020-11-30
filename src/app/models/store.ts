@@ -10,16 +10,18 @@ export interface IProvidersState extends EntityState<IProvider> {
   error: string;
 }
 export interface IPassportsState extends EntityState<IPassportListItem> {
+  filter: string;
   isLoading: boolean;
   error: string;
 }
 export interface ISharedPassportsState
   extends EntityState<ISharedPassportListItem> {
+  filter: string;
+  isLoading: boolean;
+  error: string;
   passportIds: {
     [key: string]: string[];
   };
-  isLoading: boolean;
-  error: string;
 }
 export interface IState {
   user: IUserState;

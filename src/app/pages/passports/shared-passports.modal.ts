@@ -1,4 +1,4 @@
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, IonRefresher } from '@ionic/angular';
 import {
   Component,
   ChangeDetectionStrategy,
@@ -35,53 +35,30 @@ import { Router } from '@angular/router';
       </ion-toolbar>
     </ion-header>
 
-    <ion-content fullscreen class="ion-padding">
-      <ng-container *ngIf="shared$ | async as shared">
-        <ion-list lines="full" *ngIf="shared.length">
-          <ion-item-sliding
-            *ngFor="let sharedPassport of shared"
-            (ionSwipe)="deleteSharedPassport(sharedPassport)"
-          >
-            <ion-item (click)="openSharedPassport(sharedPassport)">
-              <ion-thumbnail slot="start">
-                <img
-                  [src]="
-                    'assets/icons/providers/' + passport.providerId + '.svg'
-                  "
-                />
-              </ion-thumbnail>
-              <ion-label class="ion-text-wrap">
-                <ion-text color="primary">
-                  <h2>{{ sharedPassport.providerId | titlecase }}</h2>
-                </ion-text>
-                <ion-text>
-                  <p>Shared on: {{ sharedPassport.iat * 1000 | date }}</p>
-                </ion-text>
-                <ion-text color="secondary">
-                  <p>Valid until: {{ sharedPassport.exp * 1000 | date }}</p>
-                </ion-text>
-                <div class="claims">
-                  <ion-chip
-                    color="secondary"
-                    *ngFor="let claim of sharedPassport.claims"
-                  >
-                    <ion-label>{{ claim }}</ion-label>
-                  </ion-chip>
-                </div>
-              </ion-label>
-            </ion-item>
-            <ion-item-options side="end">
-              <ion-item-option
-                color="danger"
-                expandable
-                (click)="deleteSharedPassport(sharedPassport)"
-                ><ion-icon slot="start" name="trash-outline"></ion-icon>
-                Remove</ion-item-option
-              >
-            </ion-item-options>
-          </ion-item-sliding>
-        </ion-list></ng-container
-      >
+    <ion-content class="ion-padding">
+      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+      <ion-list lines="full">
+        <shared-passport-item
+          *ngFor="let sharedPassport of shared$ | async"
+          [sharedPassport]="sharedPassport"
+          [providerId]="passport.providerId"
+          (click)="openSharedPassport(sharedPassport)"
+        ></shared-passport-item>
+        <ng-container *ngIf="sharedExpired$ | async as sharedExpired">
+          <ion-item-divider *ngIf="sharedExpired.length">
+            <ion-label> Expired </ion-label>
+          </ion-item-divider>
+          <shared-passport-item
+            *ngFor="let sharedPassport of sharedExpired"
+            [sharedPassport]="sharedPassport"
+            [providerId]="passport.providerId"
+            expired
+            (click)="openSharedPassport(sharedPassport)"
+          ></shared-passport-item>
+        </ng-container>
+      </ion-list>
     </ion-content>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -106,7 +83,22 @@ import { Router } from '@angular/router';
 export class SharedPassportsModal implements OnInit {
   @Input() passport: IPassportListItem;
   public shared$: Observable<ISharedPassportListItem[]> = this.store.pipe(
-    select((state) => selectSharedPassports(state, this.passport.id)),
+    select((state) =>
+      selectSharedPassports(state, {
+        passportId: this.passport.id,
+        expired: false,
+      }),
+    ),
+  );
+  public sharedExpired$: Observable<
+    ISharedPassportListItem[]
+  > = this.store.pipe(
+    select((state) =>
+      selectSharedPassports(state, {
+        passportId: this.passport.id,
+        expired: true,
+      }),
+    ),
   );
   public isLoading$: Observable<boolean> = this.store.pipe(
     select(selectIsLoading),
@@ -121,15 +113,26 @@ export class SharedPassportsModal implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.shared$.pipe(first()).subscribe(
-      (shared) =>
-        shared.length <= 1 &&
-        this.store.dispatch(
-          SharedPassportsRequestAction({
-            passportId: this.passport.id,
-          }),
-        ),
+    // load them all when we open
+    this.store.dispatch(
+      SharedPassportsRequestAction({
+        passportId: this.passport.id,
+      }),
     );
+  }
+
+  doRefresh({ target }: { target: IonRefresher }) {
+    this.store.dispatch(
+      SharedPassportsRequestAction({
+        passportId: this.passport.id,
+      }),
+    );
+    const sub = this.isLoading$.subscribe((isLoading) => {
+      if (isLoading === false) {
+        sub.unsubscribe();
+        target.complete();
+      }
+    });
   }
 
   openSharedPassport(sharedPassport: ISharedPassportListItem) {

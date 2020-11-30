@@ -6,15 +6,22 @@ import { ToolbarComponent } from './toolbar.component';
 import { AccountPopover } from './account.popover';
 import { PassportComponent } from './passport.component';
 import { PassportClaimsComponent } from './claims.component';
+import { SharedPassportItemComponent } from './shared-passport-item.component';
 
 @NgModule({
   imports: [IonicModule, CommonModule],
-  exports: [ToolbarComponent, PassportComponent, PassportClaimsComponent],
+  exports: [
+    ToolbarComponent,
+    PassportComponent,
+    PassportClaimsComponent,
+    SharedPassportItemComponent,
+  ],
   declarations: [
     ToolbarComponent,
     AccountPopover,
     PassportComponent,
     PassportClaimsComponent,
+    SharedPassportItemComponent,
   ],
   providers: [],
 })

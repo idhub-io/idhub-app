@@ -1,10 +1,10 @@
-import { NewPassportModal } from './new-passport.modal';
 import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   ModalController,
   AlertController,
   ActionSheetController,
+  IonRefresher,
 } from '@ionic/angular';
 import { IPassportListItem, IPassport, IState } from '@models';
 import { select, Store } from '@ngrx/store';
@@ -17,12 +17,14 @@ import {
 import { first } from 'rxjs/operators';
 import {
   PassportDeletionRequestAction,
+  PassportsFilterAction,
   PassportsRequestAction,
 } from '@store/reducers/passports';
 import { ApiService } from '@services/api.service';
 import { PassportModal } from './passport.modal';
 import { SharePassportModal } from './share.modal';
 import { SharedPassportsModal } from './shared-passports.modal';
+import { NewPassportModal } from './new-passport.modal';
 
 @Component({
   selector: 'passports-page',
@@ -34,8 +36,10 @@ import { SharedPassportsModal } from './shared-passports.modal';
         (ionChange)="filter($event.detail.value)"
       ></ion-searchbar>
     </ion-header>
-
-    <ion-content [fullscreen]="true">
+    <ion-content>
+      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
       <ng-container *ngIf="passports$ | async as passports">
         <ion-list lines="full" *ngIf="passports.length">
           <ion-item-sliding
@@ -178,10 +182,20 @@ export class PassportsPage implements OnInit, OnDestroy {
     this.routeSubscription.unsubscribe();
   }
 
+  doRefresh({ target }: { target: IonRefresher }) {
+    this.store.dispatch(PassportsRequestAction());
+    const sub = this.isLoading$.subscribe((isLoading) => {
+      if (isLoading === false) {
+        sub.unsubscribe();
+        target.complete();
+      }
+    });
+  }
+
   errorImg() {}
 
   filter(value: string) {
-    console.log('eeee', value);
+    this.store.dispatch(PassportsFilterAction({ filter: value }));
   }
 
   async deletePassport(passport: IPassportListItem) {
@@ -276,7 +290,7 @@ export class PassportsPage implements OnInit, OnDestroy {
     ];
     if (passport.nbSharedPassports > 0) {
       buttons.push({
-        text: `Browse shared passwords (${passport.nbSharedPassports})`,
+        text: `My Shared Passports (${passport.nbSharedPassports})`,
         icon: 'albums-outline',
         handler: () => {
           this.getSharedPassports(passport);

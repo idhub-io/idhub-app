@@ -80,7 +80,7 @@ import { ApiService } from '@services/api.service';
       ></ion-searchbar>
     </ion-header>
 
-    <ion-content [fullscreen]="true">
+    <ion-content>
       <ion-list lines="full">
         <ion-item-sliding
           *ngFor="let passport of passports$ | async"

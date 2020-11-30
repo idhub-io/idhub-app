@@ -5,6 +5,10 @@ import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
 export const NAMESPACE = 'passports';
 
+export const PassportsFilterAction = createAction(
+  'PASSPORTS_FILTER',
+  props<{ filter: string }>(),
+);
 export const PassportsRequestAction = createAction('PASSPORTS_REQUEST');
 export const PassportsSuccessAction = createAction(
   'PASSPORTS_SUCCESS',
@@ -33,6 +37,7 @@ export type ActionsUnion =
 export const adapter: EntityAdapter<IPassportListItem> = createEntityAdapter<IPassportListItem>();
 
 export const initialState: IPassportsState = adapter.getInitialState({
+  filter: '',
   isLoading: false,
   error: '',
 });
@@ -46,6 +51,10 @@ export const PassportsReducer = createReducer(
   initialState,
   on(PassportsRequestAction, requestAction),
   on(PassportDeletionRequestAction, requestAction),
+  on(PassportsFilterAction, (state, { filter }) => ({
+    ...state,
+    filter,
+  })),
   on(PassportsSuccessAction, (state, { passports }) => ({
     ...state,
     ...adapter.setAll(passports, state),

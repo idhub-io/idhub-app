@@ -13,6 +13,8 @@ export type IPassportProviderId =
 export interface IPassportListItem {
   id: string;
   userId: string;
+  sub: string;
+  subFriendlyName: string;
   providerId: IPassportProviderId;
   nbSharedPassports: number;
   exp: number;

@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
       <app-toolbar></app-toolbar>
     </ion-header>
 
-    <ion-content [fullscreen]="true">
+    <ion-content>
       <div class="wrapper">
         <ion-card>
           <ion-card-header>

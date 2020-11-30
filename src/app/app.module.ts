@@ -30,13 +30,14 @@ console.log({ environment });
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    EffectsModule.forRoot(rootEffects),
+    StoreRouterConnectingModule.forRoot(),
+    StoreModule.forRoot(rootReducers, { metaReducers: middlewares }),
+    // always inport devtools before StoreModule ^
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
     }),
-    EffectsModule.forRoot(rootEffects),
-    StoreRouterConnectingModule.forRoot(),
-    StoreModule.forRoot(rootReducers, { metaReducers: middlewares }),
     HttpClientModule,
     OAuthModule.forRoot({
       resourceServer: {

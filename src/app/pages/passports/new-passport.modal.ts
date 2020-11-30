@@ -26,7 +26,7 @@ import { ApiService } from '@services/api.service';
       </ion-toolbar>
     </ion-header>
 
-    <ion-content fullscreen class="ion-padding">
+    <ion-content class="ion-padding">
       <h2>Passport providers</h2>
       <p>Choose between one of our supported passport providers.</p>
       <div class="providers">

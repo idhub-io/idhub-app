@@ -450,7 +450,7 @@ const passports: IPassport[] = [
       <app-toolbar></app-toolbar>
     </ion-header>
 
-    <ion-content [fullscreen]="true">
+    <ion-content>
       <app-passport
         *ngFor="let passport of passports"
         [passport]="passport"

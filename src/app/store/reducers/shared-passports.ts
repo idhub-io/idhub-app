@@ -18,6 +18,15 @@ export const SharedPassportsErrorAction = createAction(
   props<{ error: string }>(),
 );
 
+export const SharedPassportCreationRequestAction = createAction(
+  'SHARED_PASSPORTS_CREATION_REQUEST',
+  props<{ passportId: string; claims: string[]; timeInMin: number }>(),
+);
+export const SharedPassportCreationSuccessAction = createAction(
+  'SHARED_PASSPORTS_CREATION_SUCCESS',
+  props<{ passportId: string; sharedPassport: ISharedPassportListItem }>(),
+);
+
 export const SharedPassportDeletionRequestAction = createAction(
   'SHARED_PASSPORTS_DELETION_REQUEST',
   props<{ passportId: string; sharedPassportId: string }>(),
@@ -31,12 +40,15 @@ export type ActionsUnion =
   | typeof SharedPassportsSuccessAction
   | typeof SharedPassportsErrorAction
   | typeof SharedPassportDeletionRequestAction
-  | typeof SharedPassportDeletionSuccessAction;
+  | typeof SharedPassportDeletionSuccessAction
+  | typeof SharedPassportCreationRequestAction
+  | typeof SharedPassportCreationSuccessAction;
 
 export const adapter: EntityAdapter<ISharedPassportListItem> = createEntityAdapter<ISharedPassportListItem>();
 
 export const initialState: ISharedPassportsState = adapter.getInitialState({
   passportIds: {},
+  filter: '',
   isLoading: false,
   error: '',
 });
@@ -50,6 +62,7 @@ export const SharedPassportsReducer = createReducer(
   initialState,
   on(SharedPassportsRequestAction, requestAction),
   on(SharedPassportDeletionRequestAction, requestAction),
+  on(SharedPassportCreationRequestAction, requestAction),
   on(
     SharedPassportsSuccessAction,
     (state, { passportId, sharedPassports }) => ({
@@ -63,6 +76,19 @@ export const SharedPassportsReducer = createReducer(
       error: '',
     }),
   ),
+  // on(
+  //   SharedPassportCreationSuccessAction,
+  //   (state, { passportId, sharedPassport }) => ({
+  //     ...state,
+  //     entities: adapter.addOne(sharedPassport, state).entities,
+  //     passportIds: {
+  //       ...state.passportIds,
+  //       [passportId]: [...state.passportIds[passportId], sharedPassport.id],
+  //     },
+  //     isLoading: false,
+  //     error: '',
+  //   }),
+  // ),
   on(
     SharedPassportDeletionSuccessAction,
     (state, { passportId, sharedPassportId }) => ({
