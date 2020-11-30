@@ -26,8 +26,18 @@ import { SharedPassportCreationRequestAction } from '@store/reducers/shared-pass
 
     <ion-content>
       <form *ngIf="passport" [formGroup]="formGroup">
+        <ion-toolbar>
+          <ion-list-header style="align-items: center;" slot="start">
+            Claims
+          </ion-list-header>
+          <ion-buttons slot="end">
+            <ion-button color="secondary" (click)="selectAll()">
+              <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+
         <ion-list formArrayName="claims">
-          <ion-list-header> Claims to share </ion-list-header>
           <ion-item
             *ngFor="let claim of passport.claims; let i = index"
             [formGroupName]="i"
@@ -102,6 +112,26 @@ export class SharePassportModal implements OnInit {
           }),
         ),
       );
+    }
+  }
+
+  selectAll() {
+    const { claims, date } = this.formGroup.value;
+    const checked = claims.filter((claim) => claim.checked);
+    if (claims.length === checked.length) {
+      (<FormArray>this.formGroup.get('claims')).controls.forEach((control) => {
+        control.setValue({
+          ...control.value,
+          checked: false,
+        });
+      });
+    } else {
+      (<FormArray>this.formGroup.get('claims')).controls.forEach((control) => {
+        control.setValue({
+          ...control.value,
+          checked: true,
+        });
+      });
     }
   }
 

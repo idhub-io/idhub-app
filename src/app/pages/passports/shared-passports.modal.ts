@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   OnInit,
   Input,
+  ElementRef,
 } from '@angular/core';
 import { ISharedPassportListItem, IState, IPassportListItem } from '@models';
 import { select, Store } from '@ngrx/store';
@@ -20,6 +21,7 @@ import {
   SharedPassportsRequestAction,
 } from '@store/reducers/shared-passports';
 import { Router } from '@angular/router';
+import { PassportModal } from './passport.modal';
 
 @Component({
   selector: 'new-passport-modal',
@@ -110,6 +112,8 @@ export class SharedPassportsModal implements OnInit {
     protected store: Store<IState>,
     public alertController: AlertController,
     protected apiService: ApiService,
+    public modalController: ModalController,
+    protected el: ElementRef,
   ) {}
 
   ngOnInit() {
@@ -135,10 +139,18 @@ export class SharedPassportsModal implements OnInit {
     });
   }
 
-  openSharedPassport(sharedPassport: ISharedPassportListItem) {
-    this.router.navigate(['/passports'], {
-      fragment: `shared-passport-id=${sharedPassport.id}`,
+  async openSharedPassport(sharedPassport: ISharedPassportListItem) {
+    const modal = await this.modalController.create({
+      component: PassportModal,
+      cssClass: 'transparent-modal',
+      swipeToClose: true,
+      componentProps: {
+        passportId: sharedPassport.passportId,
+        sharedPassportId: sharedPassport.id,
+      },
+      presentingElement: await this.modalController.getTop(),
     });
+    await modal.present();
   }
 
   async deleteSharedPassport(sharedPassport: ISharedPassportListItem) {

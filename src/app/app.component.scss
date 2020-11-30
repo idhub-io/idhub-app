@@ -139,7 +139,7 @@ ion-item.selected {
   ion-toolbar {
     --box-shadow: none;
     --color: white;
-    --border-width: 0;
+    --border-width: 0 !important;
     ion-button {
       font-size: 2em;
     }

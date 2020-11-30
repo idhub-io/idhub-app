@@ -38,4 +38,5 @@ export const translationMap = {
   locality: 'Locality',
   region: 'Region',
   postal_code: 'Postal Code',
+  username: 'Username',
 };

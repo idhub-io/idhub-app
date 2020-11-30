@@ -20,7 +20,7 @@ import { translationMap } from '../utils/claims';
           <img *ngIf="claim.img" [src]="claim.img"
         /></ion-thumbnail>
         <ion-label class="ion-text-wrap">
-          <p>{{ translationMap[claim.id] }}</p>
+          <p>{{ translationMap[claim.id] || claim.id }}</p>
           <h3>{{ claim.value }}</h3>
         </ion-label>
       </ion-item>

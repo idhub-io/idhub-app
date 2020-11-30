@@ -22,7 +22,7 @@ export interface IPassportListItem {
 }
 export interface ISharedPassportListItem {
   id: string;
-  providerId: IPassportProviderId;
+  passportId: string;
   claims: string[];
   exp: number;
   iat: number;

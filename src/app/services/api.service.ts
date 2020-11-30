@@ -67,6 +67,18 @@ export class ApiService {
     );
   }
 
+  validateSharedPassport(passportId: string, sharedPassportId: string) {
+    return this.http.get<{
+      passport: IPassport;
+      valid: boolean;
+      error: [];
+      rules: [];
+    }>(
+      environment.apiUrl +
+        `/wallet/passports/${passportId}/shared/${sharedPassportId}/verify`,
+    );
+  }
+
   deleteSharedPassport(passportId: string, sharedPassportId: string) {
     return this.http.delete<void>(
       environment.apiUrl +

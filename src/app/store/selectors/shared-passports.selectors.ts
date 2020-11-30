@@ -30,6 +30,9 @@ export const selectSharedPassports = createSelector(
     ids
       ? ids
           .map((id: string) => entities[id])
-          .filter(({ exp }) => isFuture(new Date(exp * 1000)))
+          .filter(({ exp }) => {
+            const valid = isFuture(new Date(exp * 1000));
+            return expired ? !valid : valid;
+          })
       : [],
 );

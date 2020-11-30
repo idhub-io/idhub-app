@@ -39,6 +39,7 @@ import { ApiService } from '@services/api.service';
 })
 export class PassportModal implements OnInit {
   @Input() passportId: string;
+  @Input() sharedPassportId: string;
   passport: IPassport;
 
   constructor(
@@ -48,20 +49,17 @@ export class PassportModal implements OnInit {
   ) {}
 
   async ngOnInit() {
-    const { valid, passport } = await this.apiService
-      .validatePassport(this.passportId)
-      .toPromise();
+    const { valid, passport } = await (this.sharedPassportId
+      ? this.apiService.validateSharedPassport(
+          this.passportId,
+          this.sharedPassportId,
+        )
+      : this.apiService.validatePassport(this.passportId)
+    ).toPromise();
 
     if (valid) {
       this.passport = passport;
     }
-  }
-
-  async createPassport(providerId: string) {
-    const { redirectUri } = await this.apiService
-      .createPassport(providerId)
-      .toPromise();
-    window.location.href = redirectUri;
   }
 
   dismiss() {

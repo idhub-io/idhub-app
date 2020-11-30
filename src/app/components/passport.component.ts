@@ -139,6 +139,7 @@ export class PassportComponent implements OnInit, OnChanges {
             'company',
             'login',
             'location',
+            'username',
           ].includes(claim.id),
         ),
       });
@@ -190,7 +191,7 @@ export class PassportComponent implements OnInit, OnChanges {
           const address = passport.claims.find(
             (claim) => claim.id === 'address',
           );
-          if (address) {
+          if (address && address.values) {
             this.claimsGroup.push({
               title: 'Address',
               claims: address.values.filter(
