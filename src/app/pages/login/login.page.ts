@@ -66,18 +66,16 @@ export class LoginPage implements OnInit {
     // }
     // if (this.route.snapshot.queryParams)
     const code = this.route.snapshot.queryParams.code;
-    console.log(code);
     if (code) {
-      const result = await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-      if (result) {
-        this.router.navigate(['passports']);
-      }
-      console.log({ result });
+      console.log("We got a code");
+      await this.oauthService.loadDiscoveryDocumentAndTryLogin();
       // const hasToken = this.oauthService.hasValidAccessToken();
       // await this.router.navigate(['passports']);
     } else {
-      this.router.navigate(['passports']);
+      console.log("We dont have a code");
     }
+    this.router.navigate(['passports']);
+
   }
 
   async login() {
