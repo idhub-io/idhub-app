@@ -10,7 +10,7 @@ import { LoginSuccessAction } from '@store/reducers/user';
 import { PWAService } from '@services/pwa.service';
 
 export const authCodeFlowConfig: AuthConfig = {
-  issuer: 'https://sso.idhub.io',
+  issuer: 'https://sso.idhub.io/auth/realms/external',
 
   redirectUri: window.location.origin + '/login',
   //  window.location.origin + '/exchange-code',
