@@ -17,7 +17,7 @@ import { IPassport } from '@models';
           <img src="assets/idhub.svg" width="40" />IDHub Passport
         </div>
         <span style="flex:1;"></span>
-        <span>{{ passport.providerId }}</span>
+        <span class="provider-id">{{ passport.providerId }}</span>
       </div>
       <div
         class="banner-img"
@@ -53,6 +53,9 @@ import { IPassport } from '@models';
   `,
   styles: [
     `
+        .provider-id {
+          text-transform: capitalize;
+        }
       :host {
         display: block;
       }
