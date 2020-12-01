@@ -54,7 +54,7 @@ import { AnimationOptions } from 'ngx-lottie';
                 <ion-thumbnail slot="start">
                   <img
                     [src]="
-                      'assets/icons/providers/' + passport.providerId + '.svg'
+                      'assets/icons/providers/' + this.prefersDark + '/' + passport.providerId + '.svg'
                     "
                   />
                   <!-- <ion-skeleton-text></ion-skeleton-text> -->
@@ -201,10 +201,13 @@ export class PassportsPage implements OnInit, OnDestroy {
     public alertController: AlertController,
     public actionSheetController: ActionSheetController,
     protected apiService: ApiService,
-    protected el: ElementRef,
+    protected el: ElementRef
   ) {}
 
+  private prefersDark;
+
   ngOnInit() {
+    this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark":"light";
     this.passports$
       .pipe(first())
       .subscribe(
