@@ -27,6 +27,7 @@ export const authCodeFlowConfig: AuthConfig = {
   scope: 'openid wallet passport',
   useSilentRefresh: true,
   showDebugInformation: true,
+  // oidc: false,
 };
 @Component({
   selector: 'app-root',
@@ -60,6 +61,7 @@ export class AppComponent implements OnInit {
       const token = this.oauthService.hasValidAccessToken();
       if (token) {
         const user = <IUser>await this.oauthService.loadUserProfile();
+        console.log({ user });
         this.store.dispatch(LoginSuccessAction({ user }));
       }
     } catch (error) {

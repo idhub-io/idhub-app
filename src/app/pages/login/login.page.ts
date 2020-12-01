@@ -1,6 +1,7 @@
 import { OAuthService, AuthConfig } from 'angular-oauth2-oidc';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
   selector: 'passport-page',
@@ -13,26 +14,23 @@ import { Router, ActivatedRoute } from '@angular/router';
       <div class="wrapper">
         <ion-card>
           <ion-card-header>
-            <ion-card-title
-              >Share your passport as an electronique format.</ion-card-title
+            <ion-card-title class="ion-text-center ion-margin-bottom"
+              >Welcome to IdHub</ion-card-title
             >
+            <ion-card-subtitle class="ion-text-center"
+              >We simplify the creation and sharing of your e-passports
+            </ion-card-subtitle>
           </ion-card-header>
+          <ng-lottie
+            [style]="loginAnimStyle"
+            [options]="loginAnimOptions"
+          ></ng-lottie>
 
           <ion-card-content>
-            <p>
-              Simple and secure, your epassport is accessible in the cloud,
-              following you where ever you are. No need anymore to send your
-              passport photocopy around, in the right format.
-            </p>
-            <p>
-              the e-passport uses digital signing to allow you sharing your
-              information in a secured way
-            </p>
             <div class="ion-text-center">
-              <img class="passport" src="assets/passport.svg" />
-            </div>
-            <div class="ion-text-center">
-              <ion-button color="secondary" (click)="login()">Login</ion-button>
+              <ion-button color="secondary" size="large" (click)="login()"
+                >Login</ion-button
+              >
             </div>
           </ion-card-content>
         </ion-card>
@@ -41,6 +39,16 @@ import { Router, ActivatedRoute } from '@angular/router';
   `,
 })
 export class LoginPage implements OnInit {
+  loginAnimOptions: AnimationOptions = {
+    path: '/assets/animations/login.json',
+  };
+  loginAnimStyle: Partial<CSSStyleDeclaration> = {
+    maxWidth: '250px',
+    width: '100%',
+    margin: '0 auto',
+    display: 'block',
+  };
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,

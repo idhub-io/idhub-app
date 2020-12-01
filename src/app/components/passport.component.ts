@@ -41,6 +41,13 @@ import { IPassport } from '@models';
           [title]="claimsItem.title"
           [claims]="claimsItem.claims"
         ></passport-claims>
+        <div class="ion-padding iontext-center" *ngIf="shareToken">
+          <qrcode
+            [qrdata]="getQrcodeString()"
+            [width]="256"
+            [errorCorrectionLevel]="'M'"
+          ></qrcode>
+        </div>
       </ion-card-content>
     </ion-card>
   `,
@@ -48,6 +55,9 @@ import { IPassport } from '@models';
     `
       :host {
         display: block;
+      }
+      :host ::ng-deep .qrcode {
+        text-align: center;
       }
       ion-card {
         max-width: 500px;
@@ -103,6 +113,7 @@ import { IPassport } from '@models';
 })
 export class PassportComponent implements OnInit, OnChanges {
   @Input() passport: IPassport;
+  @Input() shareToken: string;
   claimsGroup: { title: string; claims: IPassportClaim[] }[] = [];
   constructor() {}
 
@@ -214,6 +225,10 @@ export class PassportComponent implements OnInit, OnChanges {
           break;
       }
     }
+  }
+
+  getQrcodeString() {
+    return `${window.location.origin}/passport#token=${this.shareToken}`;
   }
 
   errorImg(event: Event) {

@@ -29,6 +29,7 @@ export class ApiService {
     return this.http.get<{
       passport: IPassport;
       valid: boolean;
+      token?: string;
       error: [];
       rules: [];
     }>(environment.apiUrl + `/wallet/passports/${passportId}/verify`);
@@ -71,6 +72,7 @@ export class ApiService {
     return this.http.get<{
       passport: IPassport;
       valid: boolean;
+      token: string;
       error: [];
       rules: [];
     }>(

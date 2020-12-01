@@ -22,6 +22,7 @@ import { ApiService } from '@services/api.service';
         class="ion-margin"
         *ngIf="passport"
         [passport]="passport"
+        [shareToken]="shareToken"
       ></app-passport>
     </ion-content>
   `,
@@ -41,6 +42,7 @@ export class PassportModal implements OnInit {
   @Input() passportId: string;
   @Input() sharedPassportId: string;
   passport: IPassport;
+  shareToken: string;
 
   constructor(
     private modalCtrl: ModalController,
@@ -49,7 +51,7 @@ export class PassportModal implements OnInit {
   ) {}
 
   async ngOnInit() {
-    const { valid, passport } = await (this.sharedPassportId
+    const { valid, passport, token } = await (this.sharedPassportId
       ? this.apiService.validateSharedPassport(
           this.passportId,
           this.sharedPassportId,
@@ -59,6 +61,10 @@ export class PassportModal implements OnInit {
 
     if (valid) {
       this.passport = passport;
+    }
+
+    if (token) {
+      this.shareToken = token;
     }
   }
 

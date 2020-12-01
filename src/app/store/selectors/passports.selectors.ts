@@ -14,6 +14,8 @@ export const selectIsLoading = (state: IState) => state[NAMESPACE].isLoading;
 export const selectError = (state: IState) => state[NAMESPACE].error;
 export const selectFilter = (state: IState) => state[NAMESPACE].filter;
 
+export const selectAllPassports = selectAll;
+
 export const selectPassports = createSelector(
   selectAll,
   selectFilter,

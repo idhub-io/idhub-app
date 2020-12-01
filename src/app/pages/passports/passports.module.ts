@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { LottieModule } from 'ngx-lottie';
 
 import { PassportRoutingModule } from './passports-routing.module';
 import { PassportsPage } from './passports.page';
@@ -19,6 +20,7 @@ import { SharedPassportsModal } from './shared-passports.modal';
     PassportRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    LottieModule,
   ],
   declarations: [
     PassportsPage,

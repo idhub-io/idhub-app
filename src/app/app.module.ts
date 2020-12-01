@@ -6,6 +6,7 @@ import { IonicModule, IonicRouteStrategy, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { HttpClientModule } from '@angular/common/http';
+import { LottieModule } from 'ngx-lottie';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +23,10 @@ import {
 } from '@angular/service-worker';
 
 console.log({ environment });
+
+export function playerFactory() {
+  return import('lottie-web');
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -48,6 +53,7 @@ console.log({ environment });
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
+    LottieModule.forRoot({ player: playerFactory }),
   ],
   providers: [
     StatusBar,
