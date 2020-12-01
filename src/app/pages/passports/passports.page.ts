@@ -64,7 +64,7 @@ import { AnimationOptions } from 'ngx-lottie';
                     <h2>{{ passport.providerId | titlecase }}</h2>
                   </ion-text>
                   <ion-text>
-                    <p>Created on: {{ passport.iat * 1000 | date }}</p>
+                    <p>{{ passport.subFriendlyName}}</p>
                   </ion-text>
                   <ion-text color="secondary">
                     <p>Valid until: {{ passport.exp * 1000 | date }}</p>
