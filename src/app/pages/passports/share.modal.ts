@@ -9,6 +9,7 @@ import { IPassport, IState } from '@models';
 import { ApiService } from '@services/api.service';
 import { translationMap } from 'src/app/utils/claims';
 import { SharedPassportCreationRequestAction } from '@store/reducers/shared-passports';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'new-passport-modal',
@@ -90,7 +91,8 @@ export class SharePassportModal implements OnInit {
   minDate: string = new Date().toISOString();
 
   constructor(
-    private modalCtrl: ModalController,
+      private router: Router,
+      private modalCtrl: ModalController,
     protected store: Store<IState>,
     protected apiService: ApiService,
     private fb: FormBuilder,
@@ -147,9 +149,10 @@ export class SharePassportModal implements OnInit {
         passportId: this.passportId,
         timeInMin: differenceInMinutes(new Date(date), new Date()),
       }),
-    );
 
+    );
     this.dismiss();
+
   }
 
   dismiss() {

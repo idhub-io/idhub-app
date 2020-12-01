@@ -59,7 +59,7 @@ export class LoginPage implements OnInit {
     console.log(this.route.snapshot.fragment);
     // this.oauthService.configure(authCodeFlowConfig);
 
-    let hasToken = this.oauthService.hasValidAccessToken();
+    let hasToken = this.oauthService.hasValidIdToken();
     console.log({ hasToken });
     // if (hasToken) {
     //   this.router.navigate(['passports']);
@@ -75,6 +75,8 @@ export class LoginPage implements OnInit {
       console.log({ result });
       // const hasToken = this.oauthService.hasValidAccessToken();
       // await this.router.navigate(['passports']);
+    } else {
+      this.router.navigate(['passports']);
     }
   }
 
