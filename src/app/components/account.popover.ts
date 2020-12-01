@@ -10,7 +10,6 @@ import { LogoutSuccessAction } from '@store/reducers/user';
 @Component({
   template: `
     <ion-list lines="none">
-      <ion-item>All Users</ion-item>
       <ion-item (click)="logout()">Logout</ion-item>
     </ion-list>
   `,
