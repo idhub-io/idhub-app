@@ -24,7 +24,7 @@ export const authCodeFlowConfig: AuthConfig = {
   // such applications.
   // dummyClientSecret: 'secret',
   responseType: 'code',
-  scope: 'openid wallet passport',
+  scope: 'openid wallet passport offline_access',
   useSilentRefresh: true,
   showDebugInformation: true,
   // oidc: false,
