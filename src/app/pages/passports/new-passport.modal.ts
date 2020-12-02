@@ -72,7 +72,7 @@ export class NewPassportModal implements OnInit {
     protected apiService: ApiService,
   ) {}
 
-  private prefersDark;
+  public prefersDark;
 
   ngOnInit() {
     this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark":"light";

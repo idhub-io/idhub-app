@@ -39,7 +39,7 @@ export class SharedPassportItemComponent implements OnInit {
   @Input() providerId: string;
   @Input() sharedPassport: ISharedPassportListItem;
   constructor() {}
-  private prefersDark;
+  public prefersDark;
 
   ngOnInit() {
     this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark":"light";

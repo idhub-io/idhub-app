@@ -204,7 +204,7 @@ export class PassportsPage implements OnInit, OnDestroy {
     protected el: ElementRef
   ) {}
 
-  private prefersDark;
+  public prefersDark;
 
   ngOnInit() {
     this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark":"light";
