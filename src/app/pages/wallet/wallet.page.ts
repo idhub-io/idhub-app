@@ -89,7 +89,7 @@ import { ApiService } from '@services/api.service';
           <ion-item>
             <ion-thumbnail slot="start">
               <img
-                [src]="'assets/icons/providers/' + passport.providerId + '.svg'"
+                [src]="'assets/icons/providers/' + this.prefersDark + '/'  + passport.providerId + '.svg'"
               />
               <!-- <ion-skeleton-text></ion-skeleton-text> -->
             </ion-thumbnail>
@@ -190,7 +190,11 @@ export class WalletPage implements OnInit, OnDestroy {
     protected apiService: ApiService,
   ) {}
 
+  private prefersDark;
+
   ngOnInit() {
+    this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark":"light";
+
     this.passports$
       .pipe(first())
       .subscribe(

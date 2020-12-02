@@ -8,9 +8,10 @@ import { AccountPopover } from './account.popover';
 import { PassportComponent } from './passport.component';
 import { PassportClaimsComponent } from './claims.component';
 import { SharedPassportItemComponent } from './shared-passport-item.component';
+import {ClipboardModule} from "ngx-clipboard";
 
 @NgModule({
-  imports: [IonicModule, CommonModule, QRCodeModule],
+    imports: [IonicModule, CommonModule, QRCodeModule, ClipboardModule],
   exports: [
     ToolbarComponent,
     PassportComponent,

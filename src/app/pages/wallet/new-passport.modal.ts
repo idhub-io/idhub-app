@@ -38,7 +38,7 @@ import { ApiService } from '@services/api.service';
         >
           <ion-thumbnail slot="start">
             <img
-              [src]="'assets/icons/providers/' + provider.id + '.svg'"
+              [src]="'assets/icons/providers/' + this.prefersDark + '/'  + provider.id + '.svg'"
             /> </ion-thumbnail
           ><span style="flex:1;"></span
           >{{ provider.id | titlecase }}</ion-button
@@ -72,7 +72,11 @@ export class NewPassportModal implements OnInit {
     protected apiService: ApiService,
   ) {}
 
+  private prefersDark;
+
   ngOnInit() {
+    this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark":"light";
+
     this.providers$
       .pipe(first())
       .subscribe(

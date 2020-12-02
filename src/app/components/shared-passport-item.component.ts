@@ -6,7 +6,7 @@ import { ISharedPassportListItem } from '@models';
   template: `
     <ion-item [ngClass]="{ disabled: expired }">
       <ion-thumbnail slot="start">
-        <img [src]="'assets/icons/providers/' + providerId + '.svg'" />
+        <img [src]="'assets/icons/providers/' + this.prefersDark + '/'  + providerId + '.svg'" />
       </ion-thumbnail>
       <ion-label class="ion-text-wrap">
         <ion-text>
@@ -39,6 +39,10 @@ export class SharedPassportItemComponent implements OnInit {
   @Input() providerId: string;
   @Input() sharedPassport: ISharedPassportListItem;
   constructor() {}
+  private prefersDark;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark":"light";
+
+  }
 }

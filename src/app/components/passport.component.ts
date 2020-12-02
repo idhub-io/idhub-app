@@ -42,6 +42,9 @@ import { IPassport } from '@models';
           [claims]="claimsItem.claims"
         ></passport-claims>
         <div class="ion-padding iontext-center" *ngIf="shareToken">
+          <div class="share-button">
+          <ion-button color="secondary" size="large"  ngxClipboard [cbContent]="getQrcodeString()">Copy share link</ion-button>
+          </div>
           <qrcode
             [qrdata]="getQrcodeString()"
             [width]="256"
@@ -62,6 +65,11 @@ import { IPassport } from '@models';
       :host ::ng-deep .qrcode {
         text-align: center;
       }
+      .share-button {
+        width: 256px;
+        margin: auto;
+      }
+      
       ion-card {
         max-width: 500px;
         margin-left: auto;

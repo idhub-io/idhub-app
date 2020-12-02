@@ -7,6 +7,7 @@ import { PassportRoutingModule } from './wallet-routing.module';
 import { WalletPage } from './wallet.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { NewPassportModal } from './new-passport.modal';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { NewPassportModal } from './new-passport.modal';
     IonicModule,
     ComponentsModule,
     PassportRoutingModule,
+    ClipboardModule
   ],
   declarations: [WalletPage, NewPassportModal],
 })

@@ -38,6 +38,7 @@
     "date-fns": "^2.16.1",
     "debug": "^4.2.0",
     "lottie-web": "^5.7.4",
+    "ngx-clipboard": "^14.0.1",
     "ngx-lottie": "^6.4.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
