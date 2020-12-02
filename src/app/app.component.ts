@@ -54,6 +54,8 @@ export class AppComponent implements OnInit {
 
   async initializeApp() {
     await this.oauthService.loadDiscoveryDocumentAndTryLogin();
+    this.oauthService.setupAutomaticSilentRefresh();
+
     await this.platform.ready();
 
     this.pwa.init();
