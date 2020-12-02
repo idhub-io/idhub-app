@@ -57,30 +57,13 @@ export class LoginPage implements OnInit {
 
   async ngOnInit() {
     console.log(this.route.snapshot.fragment);
-    // this.oauthService.configure(authCodeFlowConfig);
-
-    let hasToken = this.oauthService.hasValidIdToken();
-    console.log({ hasToken });
-    // if (hasToken) {
-    //   this.router.navigate(['passports']);
-    // }
-    // if (this.route.snapshot.queryParams)
-    const code = this.route.snapshot.queryParams.code;
-    if (code) {
-      console.log("We got a code");
-      await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-      // const hasToken = this.oauthService.hasValidAccessToken();
-      // await this.router.navigate(['passports']);
-    } else {
-      console.log("We dont have a code");
-    }
     this.router.navigate(['passports']);
-
   }
 
   async login() {
     console.log('login');
     await this.oauthService.loadDiscoveryDocumentAndLogin();
     // this.oauthService.tryLoginCodeFlow();
+    this.router.navigate(['passports']);
   }
 }
