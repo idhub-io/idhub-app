@@ -50,8 +50,9 @@ import { AnimationOptions } from 'ngx-lottie';
               *ngFor="let passport of passports"
               (ionSwipe)="deletePassport(passport)"
             >
-              <ion-item (click)="presentActionSheet(passport)">
-                <ion-thumbnail slot="start">
+              <ion-item >
+                
+                <ion-thumbnail slot="start" (click)="presentActionSheet(passport)">
                   <img
                     [src]="
                       'assets/icons/providers/' + this.prefersDark + '/' + passport.providerId + '.svg'
@@ -59,7 +60,7 @@ import { AnimationOptions } from 'ngx-lottie';
                   />
                   <!-- <ion-skeleton-text></ion-skeleton-text> -->
                 </ion-thumbnail>
-                <ion-label class="ion-text-wrap">
+                <ion-label class="ion-text-wrap" (click)="presentActionSheet(passport)">
                   <ion-text color="primary">
                     <h2>{{ passport.providerId | titlecase }}</h2>
                   </ion-text>
@@ -70,8 +71,9 @@ import { AnimationOptions } from 'ngx-lottie';
                     <p>Valid until: {{ passport.exp * 1000 | date }}</p>
                   </ion-text>
                 </ion-label>
+                
                 <ion-chip
-                  *ngIf="passport.nbSharedPassports"
+                  (click)="clickCounter(passport)"
                   slot="end"
                   color="primary"
                 >
@@ -268,6 +270,14 @@ export class PassportsPage implements OnInit, OnDestroy {
     });
 
     await alert.present();
+  }
+
+  async clickCounter(passport: IPassportListItem) {
+    if (passport.nbSharedPassports > 0) {
+      this.getSharedPassports(passport);
+    } else {
+      this.sharePassport(passport.id);
+    }
   }
 
   async createPassport() {
