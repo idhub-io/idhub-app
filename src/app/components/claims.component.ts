@@ -36,6 +36,7 @@ import { translationMap } from '../utils/claims';
       .claims > ion-item {
         display: flex;
         flex-basis: 50%;
+        --background: none;
       }
       ion-thumbnail {
         margin-right: 32px;
