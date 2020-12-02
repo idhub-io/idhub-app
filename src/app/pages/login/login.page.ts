@@ -57,13 +57,21 @@ export class LoginPage implements OnInit {
 
   async ngOnInit() {
     console.log(this.route.snapshot.fragment);
-    this.router.navigate(['passports']);
+    console.log("Go the passports page");
+    let hasValidToken = this.oauthService.hasValidIdToken();
+    if (hasValidToken) {
+      console.log("Valid session, go to passport page");
+      this.router.navigate(['passports']);
+    } else {
+      console.log("No valid session, time to login")
+    }
   }
 
   async login() {
     console.log('login');
     await this.oauthService.loadDiscoveryDocumentAndLogin();
     // this.oauthService.tryLoginCodeFlow();
+    console.log("Go the passports page");
     this.router.navigate(['passports']);
   }
 }
