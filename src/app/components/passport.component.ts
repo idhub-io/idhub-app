@@ -50,6 +50,7 @@ import { IPassport } from '@models';
             [width]="256"
             [errorCorrectionLevel]="'M'"
           ></qrcode>
+          
         </div>
       </ion-card-content>
     </ion-card>
