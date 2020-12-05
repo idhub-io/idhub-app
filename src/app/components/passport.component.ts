@@ -37,29 +37,32 @@ import { ToastController } from '@ionic/angular';
         </ion-avatar>
       </div>
       <ion-card-content>
+        <div class="ion-padding iontext-center" *ngIf="shareToken">
+
+          <qrcode
+              [qrdata]="getQrcodeString()"
+              [width]="256"
+              [errorCorrectionLevel]="'M'"
+          ></qrcode>
+          <div class="share-button">
+            <ion-button
+                color="secondary"
+                size="large"
+                ngxClipboard
+                (cbOnSuccess)="copied()"
+                [cbContent]="getQrcodeString()"
+            >
+              Copy share link
+            </ion-button>
+          </div>
+        </div>
+        
         <passport-claims
           *ngFor="let claimsItem of claimsGroup"
           [title]="claimsItem.title"
           [claims]="claimsItem.claims"
         ></passport-claims>
-        <div class="ion-padding iontext-center" *ngIf="shareToken">
-          <div class="share-button">
-            <ion-button
-              color="secondary"
-              size="large"
-              ngxClipboard
-              (cbOnSuccess)="copied()"
-              [cbContent]="getQrcodeString()"
-            >
-              Copy share link
-            </ion-button>
-          </div>
-          <qrcode
-            [qrdata]="getQrcodeString()"
-            [width]="256"
-            [errorCorrectionLevel]="'M'"
-          ></qrcode>
-        </div>
+      
       </ion-card-content>
     </ion-card>
   `,
