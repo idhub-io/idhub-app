@@ -47,6 +47,11 @@ import { AnimationOptions } from 'ngx-lottie';
           ></ion-searchbar>
         </ion-header>
         <ion-content>
+          <ion-list *ngIf="error$ | async as error">
+            <ion-item color="danger">
+              <ion-label class="ion-text-wrap">{{ error }}</ion-label>
+            </ion-item>
+          </ion-list>
           <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
             <ion-refresher-content></ion-refresher-content>
           </ion-refresher>
@@ -160,14 +165,8 @@ import { AnimationOptions } from 'ngx-lottie';
               <ion-icon name="add-outline"></ion-icon>
             </ion-fab-button>
           </ion-fab>
-          <ion-list *ngIf="error$ | async as error">
-            <ion-item color="danger">
-              <ion-label class="ion-text-wrap">{{ error }}</ion-label>
-            </ion-item>
-          </ion-list>
-        </ion-content>
-      </ng-container></ng-container
-    >
+        </ion-content> </ng-container
+    ></ng-container>
   `,
   styles: [
     `
