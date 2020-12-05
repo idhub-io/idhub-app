@@ -160,8 +160,14 @@ import { AnimationOptions } from 'ngx-lottie';
               <ion-icon name="add-outline"></ion-icon>
             </ion-fab-button>
           </ion-fab>
-        </ion-content> </ng-container
-    ></ng-container>
+          <ion-list *ngIf="error$ | async as error">
+            <ion-item color="danger">
+              <ion-label class="ion-text-wrap">{{ error }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ng-container></ng-container
+    >
   `,
   styles: [
     `
