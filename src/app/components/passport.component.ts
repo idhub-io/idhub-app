@@ -251,6 +251,30 @@ export class PassportComponent implements OnInit, OnChanges {
           });
           break;
         }
+        case 'covid19lab': {
+          this.claimsGroup.push({
+            title: 'Vaccines',
+            claims: passport.claims.filter((claim) =>
+                [
+                  'covid19_vaccination',
+                  'covid19_vaccination_date'
+                ].includes(claim.id),
+            ),
+          });
+          break;
+        }
+        case 'awesome-uni': {
+          this.claimsGroup.push({
+            title: 'University',
+            claims: passport.claims.filter((claim) =>
+                [
+                  'student',
+                  'master'
+                ].includes(claim.id),
+            ),
+          });
+          break;
+        }
         case 'linkedin':
           break;
 

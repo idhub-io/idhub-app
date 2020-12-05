@@ -7,7 +7,9 @@ export type IPassportProviderId =
   | 'facebook'
   | 'eventbrite'
   | 'meetup'
-  | 'microsoft'
+    | 'microsoft'
+    | 'covid19lab'
+    | 'awesome-uni'
   | 'awesome-company';
 
 export interface IPassportListItem {
