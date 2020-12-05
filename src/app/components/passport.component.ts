@@ -234,7 +234,7 @@ export class PassportComponent implements OnInit, OnChanges {
             this.claimsGroup.push({
               title: 'Address',
               claims: address.values.filter(
-                (claim) => !['formatted', 'region'].includes(claim.id),
+                (claim) => !['formatted'].includes(claim.id),
               ),
             });
           }
