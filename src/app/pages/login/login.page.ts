@@ -15,7 +15,7 @@ import { AnimationOptions } from 'ngx-lottie';
         <ion-card>
           <ion-card-header>
             <ion-card-title class="ion-text-center ion-margin-bottom"
-              >Welcome to IdHub</ion-card-title
+              >Welcome to idHub</ion-card-title
             >
             <ion-card-subtitle class="ion-text-center"
               >We simplify the creation and sharing of your e-passports

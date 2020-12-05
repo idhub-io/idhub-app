@@ -43,16 +43,19 @@ export class SharedPassportsEffects {
   @Effect()
   share$: Observable<any> = this.actions$.pipe(
     ofType(SharedPassportCreationRequestAction),
-    mergeMap(({ passportId, claims, timeInMin }) =>
+    mergeMap(({ passportId, claims, timeInMin, onShared }) =>
       this.apiService.sharePassport(passportId, claims, timeInMin).pipe(
         retry(2),
-        switchMap((sharedPassport) => [
-          SharedPassportCreationSuccessAction({
-            passportId,
-            sharedPassport,
-          }),
-          PassportsRequestAction(),
-        ]),
+        switchMap((sharedPassport) => {
+          onShared(sharedPassport);
+          return [
+            SharedPassportCreationSuccessAction({
+              passportId,
+              sharedPassport,
+            }),
+            PassportsRequestAction(),
+          ];
+        }),
         catchError((er: HttpErrorResponse) => {
           console.log(er);
           return of(SharedPassportsErrorAction({ error: er.message }));

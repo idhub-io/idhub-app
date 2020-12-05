@@ -20,7 +20,12 @@ export const SharedPassportsErrorAction = createAction(
 
 export const SharedPassportCreationRequestAction = createAction(
   'SHARED_PASSPORTS_CREATION_REQUEST',
-  props<{ passportId: string; claims: string[]; timeInMin: number }>(),
+  props<{
+    passportId: string;
+    claims: string[];
+    timeInMin: number;
+    onShared: (shared: ISharedPassportListItem) => void;
+  }>(),
 );
 export const SharedPassportCreationSuccessAction = createAction(
   'SHARED_PASSPORTS_CREATION_SUCCESS',

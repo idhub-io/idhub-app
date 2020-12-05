@@ -1,4 +1,5 @@
-import {ActivatedRoute, Router} from '@angular/router';
+import { environment } from './../environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { Platform } from '@ionic/angular';
@@ -10,7 +11,7 @@ import { LoginSuccessAction } from '@store/reducers/user';
 import { PWAService } from '@services/pwa.service';
 
 export const authCodeFlowConfig: AuthConfig = {
-  issuer: 'https://sso.idhub.io/auth/realms/external',
+  issuer: environment.ssoUrl + '/auth/realms/external',
 
   redirectUri: window.location.origin + '/login',
   //  window.location.origin + '/exchange-code',
@@ -45,7 +46,6 @@ export class AppComponent implements OnInit {
     private store: Store<IState>,
     private pwa: PWAService,
     private router: Router,
-
   ) {
     this.oauthService.configure(authCodeFlowConfig);
     this.oauthService.events.subscribe((test) => console.log({ test }));
@@ -67,7 +67,7 @@ export class AppComponent implements OnInit {
         const user = <IUser>await this.oauthService.loadUserProfile();
         console.log({ user });
         this.store.dispatch(LoginSuccessAction({ user }));
-        this.router.navigate(['passports']);
+        // this.router.navigate(['passports']);
       }
     } catch (error) {
       console.log({ error });

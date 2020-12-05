@@ -7,6 +7,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { IPassport } from '@models';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-passport',
@@ -43,23 +44,30 @@ import { IPassport } from '@models';
         ></passport-claims>
         <div class="ion-padding iontext-center" *ngIf="shareToken">
           <div class="share-button">
-          <ion-button color="secondary" size="large"  ngxClipboard [cbContent]="getQrcodeString()">Copy share link</ion-button>
+            <ion-button
+              color="secondary"
+              size="large"
+              ngxClipboard
+              (cbOnSuccess)="copied()"
+              [cbContent]="getQrcodeString()"
+            >
+              Copy share link
+            </ion-button>
           </div>
           <qrcode
             [qrdata]="getQrcodeString()"
             [width]="256"
             [errorCorrectionLevel]="'M'"
           ></qrcode>
-          
         </div>
       </ion-card-content>
     </ion-card>
   `,
   styles: [
     `
-        .provider-id {
-          text-transform: capitalize;
-        }
+      .provider-id {
+        text-transform: capitalize;
+      }
       :host {
         display: block;
       }
@@ -67,10 +75,9 @@ import { IPassport } from '@models';
         text-align: center;
       }
       .share-button {
-        width: 256px;
-        margin: auto;
+        text-align: center;
       }
-      
+
       ion-card {
         max-width: 500px;
         margin-left: auto;
@@ -127,7 +134,7 @@ export class PassportComponent implements OnInit, OnChanges {
   @Input() passport: IPassport;
   @Input() shareToken: string;
   claimsGroup: { title: string; claims: IPassportClaim[] }[] = [];
-  constructor() {}
+  constructor(public toastController: ToastController) {}
 
   ngOnInit() {}
 
@@ -241,6 +248,14 @@ export class PassportComponent implements OnInit, OnChanges {
 
   getQrcodeString() {
     return `${window.location.origin}/passport#token=${this.shareToken}`;
+  }
+
+  async copied() {
+    const toast = await this.toastController.create({
+      message: 'Link copied!',
+      duration: 2000,
+    });
+    toast.present();
   }
 
   errorImg(event: Event) {

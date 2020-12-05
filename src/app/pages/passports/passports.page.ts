@@ -6,7 +6,12 @@ import {
   ActionSheetController,
   IonRefresher,
 } from '@ionic/angular';
-import { IPassportListItem, IPassport, IState } from '@models';
+import {
+  IPassportListItem,
+  IPassport,
+  IState,
+  ISharedPassportListItem,
+} from '@models';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import {
@@ -50,28 +55,37 @@ import { AnimationOptions } from 'ngx-lottie';
               *ngFor="let passport of passports"
               (ionSwipe)="deletePassport(passport)"
             >
-              <ion-item >
-                
-                <ion-thumbnail slot="start" (click)="presentActionSheet(passport)">
+              <ion-item>
+                <ion-thumbnail
+                  slot="start"
+                  (click)="presentActionSheet(passport)"
+                >
                   <img
                     [src]="
-                      'assets/icons/providers/' + this.prefersDark + '/' + passport.providerId + '.svg'
+                      'assets/icons/providers/' +
+                      this.prefersDark +
+                      '/' +
+                      passport.providerId +
+                      '.svg'
                     "
                   />
                   <!-- <ion-skeleton-text></ion-skeleton-text> -->
                 </ion-thumbnail>
-                <ion-label class="ion-text-wrap" (click)="presentActionSheet(passport)">
+                <ion-label
+                  class="ion-text-wrap"
+                  (click)="presentActionSheet(passport)"
+                >
                   <ion-text color="primary">
                     <h2>{{ passport.providerId | titlecase }}</h2>
                   </ion-text>
                   <ion-text>
-                    <p>{{ passport.subFriendlyName}}</p>
+                    <p>{{ passport.subFriendlyName }}</p>
                   </ion-text>
                   <ion-text color="secondary">
                     <p>Valid until: {{ passport.exp * 1000 | date }}</p>
                   </ion-text>
                 </ion-label>
-                
+
                 <ion-chip
                   (click)="clickCounter(passport)"
                   slot="end"
@@ -111,7 +125,7 @@ import { AnimationOptions } from 'ngx-lottie';
             ></ng-lottie>
             <ion-card-header>
               <ion-card-title
-                >Share your passport as an electronique format.</ion-card-title
+                >Share your passport as an electronic format.</ion-card-title
               >
             </ion-card-header>
 
@@ -203,13 +217,15 @@ export class PassportsPage implements OnInit, OnDestroy {
     public alertController: AlertController,
     public actionSheetController: ActionSheetController,
     protected apiService: ApiService,
-    protected el: ElementRef
+    protected el: ElementRef,
   ) {}
 
   public prefersDark;
 
   ngOnInit() {
-    this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark":"light";
+    this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
     this.passports$
       .pipe(first())
       .subscribe(
@@ -295,7 +311,30 @@ export class PassportsPage implements OnInit, OnDestroy {
       },
       presentingElement: this.el.nativeElement,
     });
-    return await modal.present();
+    await modal.present();
+    const {
+      data: { shared, dismissed },
+    } = await modal.onWillDismiss<{
+      shared: ISharedPassportListItem;
+      dismissed: boolean;
+    }>();
+    if (shared) {
+      this.openSharedPassport(shared);
+    }
+  }
+
+  async openSharedPassport(sharedPassport: ISharedPassportListItem) {
+    const modal = await this.modalController.create({
+      component: PassportModal,
+      cssClass: 'transparent-modal',
+      swipeToClose: true,
+      componentProps: {
+        passportId: sharedPassport.passportId,
+        sharedPassportId: sharedPassport.id,
+      },
+      presentingElement: this.el.nativeElement,
+    });
+    await modal.present();
   }
 
   async getSharedPassports(passport: IPassportListItem) {

@@ -5,22 +5,23 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { IonicModule, IonicRouteStrategy, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LottieModule } from 'ngx-lottie';
-
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
 import { rootReducers, middlewares } from '@store/reducers';
 import { rootEffects } from '@store/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {
   ServiceWorkerModule,
   SwRegistrationOptions,
 } from '@angular/service-worker';
+
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { environment } from '../environments/environment';
+import { IdHubHttpInterceptor } from './http.interceptor';
 
 console.log({ environment });
 
@@ -66,6 +67,11 @@ export function playerFactory() {
       }),
       deps: [Platform],
     },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: IdHubHttpInterceptor,
+    //   multi: true,
+    // },
   ],
   bootstrap: [AppComponent],
 })

@@ -68,6 +68,16 @@ export class ApiService {
     );
   }
 
+  getSharedPassportViaToken(token: string) {
+    return this.http.post<{
+      passport: IPassport;
+      valid: boolean;
+      token?: string;
+      error: [];
+      rules: [];
+    }>(environment.apiUrl + `/checker/shared-passport/token`, token);
+  }
+
   validateSharedPassport(passportId: string, sharedPassportId: string) {
     return this.http.get<{
       passport: IPassport;

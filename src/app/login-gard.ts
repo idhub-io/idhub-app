@@ -13,10 +13,18 @@ import { OAuthService } from 'angular-oauth2-oidc';
 export class LoginGuard implements CanActivate {
   constructor(private oauthService: OAuthService, private router: Router) {}
 
-  canActivate(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  async canActivate(
+    childRoute: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot,
+  ) {
     let hasToken = this.oauthService.hasValidAccessToken();
-    console.log({ hasToken });
-    if (!hasToken) return true;
+    console.log('1', { hasToken });
+    if (!hasToken) {
+      await this.oauthService.loadDiscoveryDocumentAndTryLogin();
+      hasToken = this.oauthService.hasValidAccessToken();
+      console.log('2', { hasToken });
+      if (!hasToken) return true;
+    }
     this.router.navigate(['passports']);
     return false;
   }
