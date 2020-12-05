@@ -15,7 +15,7 @@ import { ToastController } from '@ionic/angular';
     <ion-card>
       <div class="provider-header">
         <div class="title">
-          <img src="assets/idhub.svg" width="40" />IDHub Passport
+          <img src="assets/idhub.svg" width="40" />IDHub
         </div>
         <span style="flex:1;"></span>
         <span class="provider-id">{{ passport.providerId }}</span>
@@ -23,7 +23,7 @@ import { ToastController } from '@ionic/angular';
       <div
         class="banner-img"
         [ngClass]="{
-          hasAvatar: getClaim('pictureUri') || getClaim('avatar_url')
+          hasAvatar: getClaim('picture')
         }"
       >
         <img
@@ -31,7 +31,7 @@ import { ToastController } from '@ionic/angular';
           (error)="errorImg($event)"
         />
         <ion-avatar
-          *ngIf="getClaim('pictureUri') || getClaim('avatar_url') as claim"
+          *ngIf="getClaim('picture') as claim"
         >
           <img [src]="claim.value" />
         </ion-avatar>
@@ -150,11 +150,14 @@ export class PassportComponent implements OnInit, OnChanges {
             // santander
             'gender',
             'given_name',
+            'family_name',
             'nationality',
             'civil_status',
             'country_of_birth',
             'age',
             'birthdate',
+            'nationality',
+            'civil_status',
             // linkedin
             'localizedLastName',
             'localizedFirstName',
@@ -165,11 +168,14 @@ export class PassportComponent implements OnInit, OnChanges {
             'family_name',
             // github
             'login',
-            'blog',
+            'website',
             'company',
             'login',
             'location',
             'username',
+
+
+
           ].includes(claim.id),
         ),
       });
@@ -182,7 +188,7 @@ export class PassportComponent implements OnInit, OnChanges {
         this.claimsGroup.push({
           title: 'Contact',
           claims: passport.claims.filter((claim) =>
-            ['phone_number', 'email'].includes(claim.id),
+            ['phone_number', 'email', 'hireable', 'twitter_username'].includes(claim.id),
           ),
         });
       }
@@ -232,7 +238,12 @@ export class PassportComponent implements OnInit, OnChanges {
           this.claimsGroup.push({
             title: 'IDs',
             claims: passport.claims.filter((claim) =>
-              ['driving_license_id', 'passport_id'].includes(claim.id),
+              [
+                'driving_license_id',
+                'passport_id',
+                'tax_id',
+
+              ].includes(claim.id),
             ),
           });
           break;
