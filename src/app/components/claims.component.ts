@@ -21,7 +21,12 @@ import { translationMap } from '../utils/claims';
         /></ion-thumbnail>
         <ion-label class="ion-text-wrap">
           <p>{{ translationMap[claim.id] || claim.id }}</p>
-          <h3>{{ claim.value }}</h3>
+          <div *ngIf="claim.value.startsWith('http') || claim.id == 'website' ;else normal_claim">
+            <h3><a [href]="claim.value" target="_blank">{{ claim.value }}</a></h3>
+          </div>
+          <ng-template #normal_claim><h3>{{ claim.value }}</h3></ng-template>
+
+          
         </ion-label>
       </ion-item>
     </div>

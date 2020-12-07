@@ -39,4 +39,6 @@ export const translationMap = {
   region: 'Region',
   postal_code: 'Postal Code',
   username: 'Username',
+  covid19_vaccination: 'COVID 19 vaccinated',
+  covid19_vaccination_date: 'Last COVID 19 vaccination',
 };
