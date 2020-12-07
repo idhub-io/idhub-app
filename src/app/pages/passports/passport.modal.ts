@@ -24,6 +24,8 @@ import { ApiService } from '@services/api.service';
         [passport]="passport"
         [shareToken]="shareToken"
         [sharedPassportId]="sharedPassportId"
+        [passportId]="passportId"
+        
       ></app-passport>
     </ion-content>
   `,

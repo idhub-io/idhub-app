@@ -56,6 +56,7 @@ import {Platform, ToastController} from '@ionic/angular';
             </ion-button>
           </div>
           <div class="share-button" *ngIf="this.platform.is('ios')">
+            
             <img               
                 [width]="256"
                 src="assets/icons/Add_to_Apple_Wallet_badge.svg"
@@ -145,7 +146,7 @@ export class PassportComponent implements OnInit, OnChanges {
   @Input() passport: IPassport;
   @Input() shareToken: string;
   @Input() sharedPassportId: string;
-
+  @Input() passportId: string;
   claimsGroup: { title: string; claims: IPassportClaim[] }[] = [];
   constructor(public toastController: ToastController, public platform: Platform) {}
 
@@ -299,7 +300,9 @@ export class PassportComponent implements OnInit, OnChanges {
   }
 
   getAppleLink() {
-    window.open(`https://api.idhub.io/wallet/passports/${this.passport.id}/shared/${this.sharedPassportId}/apple`)
+    const url = `https://api.idhub.io/wallet/passports/${this.passportId}/shared/${this.sharedPassportId}/apple`;
+    console.log(url)
+    window.location.href = url
   }
 
   async copied() {
