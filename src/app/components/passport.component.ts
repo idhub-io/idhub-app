@@ -18,7 +18,19 @@ import {Platform, ToastController} from '@ionic/angular';
           <img src="assets/idhub.svg" width="40" />IDHub
         </div>
         <span style="flex:1;"></span>
-        <span class="provider-id">{{ passport.providerId }}</span>
+        <span class="provider-id">
+          {{ passport.providerId }}
+           <img
+               [width]="30"
+               [src]="
+                      'assets/icons/providers/' +
+                      this.prefersDark +
+                      '/' +
+                      passport.providerId +
+                      '.svg'
+                    "
+           />
+          </span>
       </div>
       <div
         class="banner-img"
@@ -78,7 +90,12 @@ import {Platform, ToastController} from '@ionic/angular';
   styles: [
     `
       .provider-id {
+        display: inline-flex;
+        align-items: center;
         text-transform: capitalize;
+      }
+      .provider-id img {
+        margin: 0 5px;
       }
       :host {
         display: block;
@@ -147,10 +164,17 @@ export class PassportComponent implements OnInit, OnChanges {
   @Input() shareToken: string;
   @Input() sharedPassportId: string;
   @Input() passportId: string;
+
+  public prefersDark;
+
   claimsGroup: { title: string; claims: IPassportClaim[] }[] = [];
   constructor(public toastController: ToastController, public platform: Platform) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.passport && changes.passport.currentValue) {
