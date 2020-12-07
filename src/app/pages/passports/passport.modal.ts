@@ -23,6 +23,7 @@ import { ApiService } from '@services/api.service';
         *ngIf="passport"
         [passport]="passport"
         [shareToken]="shareToken"
+        [sharedPassportId]="sharedPassportId"
       ></app-passport>
     </ion-content>
   `,
