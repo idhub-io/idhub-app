@@ -17,15 +17,14 @@ export class LoginGuard implements CanActivate {
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ) {
-    let hasToken = this.oauthService.hasValidAccessToken();
-    console.log('1', { hasToken });
-    if (!hasToken) {
-      await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-      hasToken = this.oauthService.hasValidAccessToken();
-      console.log('2', { hasToken });
-      if (!hasToken) return true;
+    if (
+      this.oauthService.hasValidAccessToken() &&
+      this.oauthService.hasValidIdToken()
+    ) {
+      this.router.navigate(['passports']);
+      return false;
+    } else {
+      return true;
     }
-    this.router.navigate(['passports']);
-    return false;
   }
 }

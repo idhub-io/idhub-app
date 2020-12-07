@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { IState, IUser } from '@models';
 import { LoginSuccessAction } from '@store/reducers/user';
 import { PWAService } from '@services/pwa.service';
+import { filter } from 'rxjs/operators';
 
 export const authCodeFlowConfig: AuthConfig = {
   issuer: environment.ssoUrl + '/auth/realms/external',
@@ -48,30 +49,35 @@ export class AppComponent implements OnInit {
     private router: Router,
   ) {
     this.oauthService.configure(authCodeFlowConfig);
-    this.oauthService.events.subscribe((test) => console.log({ test }));
+    this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService.events
+      .pipe(filter((e) => e.type === 'token_received'))
+      .subscribe(async (e) => {
+        this.router.navigate(['/passports'], {
+          replaceUrl: true,
+        });
+      });
     this.initializeApp();
   }
 
   async initializeApp() {
     await this.oauthService.loadDiscoveryDocumentAndTryLogin();
-    this.oauthService.setupAutomaticSilentRefresh();
-
-    await this.platform.ready();
-
-    this.pwa.init();
-    this.statusBar.styleDefault();
-    this.splashScreen.hide();
     try {
       const token = this.oauthService.hasValidAccessToken();
       if (token) {
         const user = <IUser>await this.oauthService.loadUserProfile();
         console.log({ user });
         this.store.dispatch(LoginSuccessAction({ user }));
-        // this.router.navigate(['passports']);
       }
     } catch (error) {
       console.log({ error });
     }
+
+    await this.platform.ready();
+
+    this.pwa.init();
+    this.statusBar.styleDefault();
+    this.splashScreen.hide();
   }
 
   ngOnInit() {}

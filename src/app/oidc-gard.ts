@@ -14,10 +14,15 @@ export class OIDCGuard implements CanActivate {
   constructor(private oauthService: OAuthService, private router: Router) {}
 
   canActivate(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    let hasToken = this.oauthService.hasValidAccessToken();
-    if (hasToken) return true;
-    console.debug("No token, we return to the login page")
-    this.router.navigate(['login']);
-    return false;
+    if (
+      this.oauthService.hasValidAccessToken() &&
+      this.oauthService.hasValidIdToken()
+    ) {
+      return true;
+    } else {
+      console.debug('No token, we return to the login page');
+      this.router.navigate(['login']);
+      return false;
+    }
   }
 }
