@@ -67,11 +67,11 @@ export function playerFactory() {
       }),
       deps: [Platform],
     },
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: IdHubHttpInterceptor,
-    //   multi: true,
-    // },
+    {
+       provide: HTTP_INTERCEPTORS,
+       useClass: IdHubHttpInterceptor,
+       multi: true,
+     },
   ],
   bootstrap: [AppComponent],
 })

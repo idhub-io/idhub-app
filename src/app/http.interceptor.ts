@@ -11,16 +11,19 @@ import { Router } from '@angular/router';
 
 import { environment } from '../environments/environment';
 import { HttpLoaderService } from '@services/http-loader.service';
+import {OAuthService} from "angular-oauth2-oidc";
 
 @Injectable()
 export class IdHubHttpInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private httpLoader: HttpLoaderService) {}
+  constructor(private router: Router, private httpLoader: HttpLoaderService, private oauthService: OAuthService) {}
 
   private prepareUrl(url) {
     return environment.apiUrl + '/' + url;
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
+    console.log("ID Hub interceptor")
+
     const headers = req.headers.has('Content-Type')
       ? req.headers
       : new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -32,26 +35,13 @@ export class IdHubHttpInterceptor implements HttpInterceptor {
     });
     if (origin === environment.ssoUrl) return next.handle(req);
 
-    // req = req.clone({
-    //   url: this.prepareUrl(req.url),
-    //   // headers,
-    // });
+    let hasToken = this.oauthService.hasValidAccessToken();
+    console.log("status of the access token: " + hasToken)
 
-    const { url, body, ...options } = req;
-    const id = this.httpLoader.add();
-    return next.handle(req).pipe(
-      tap(
-        () => {},
-        (err: any) => {
-          // if (err instanceof HttpErrorResponse) {
-          //   if (err.status === 401) {
-          //     this.router.navigate(['login']);
-          //   }
-          // }
-          // return Observable.throw(err);
-        },
-      ),
-      finalize(() => this.httpLoader.remove(id)),
-    );
+    if (!hasToken) {
+      console.log("Access token expired, try to refresh the token first.")
+      this.oauthService.refreshToken().then(res => next.handle(req));
+    }
+    return next.handle(req);
   }
 }
