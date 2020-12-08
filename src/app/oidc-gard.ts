@@ -13,16 +13,23 @@ import { OAuthService } from 'angular-oauth2-oidc';
 export class OIDCGuard implements CanActivate {
   constructor(private oauthService: OAuthService, private router: Router) {}
 
-  canActivate(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (
-      this.oauthService.hasValidAccessToken() &&
-      this.oauthService.hasValidIdToken()
-    ) {
-      return true;
+  async canActivate(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    console.log("OIDCGuard gard")
+
+    let hasToken = this.oauthService.hasValidAccessToken();
+    console.log("OIDCGuard gard: " + hasToken)
+
+    if (!hasToken) {
+      console.log("Refresh the token")
+      await this.oauthService.refreshToken();
+      hasToken = this.oauthService.hasValidAccessToken();
+      console.log("OIDCGuard gard: " + hasToken)
+      if (hasToken) return true;
     } else {
-      console.debug('No token, we return to the login page');
-      this.router.navigate(['login']);
-      return false;
+      return true;
     }
+    console.debug("No token, we return to the login page")
+    await this.router.navigate(['login']);
+    return false;
   }
 }
