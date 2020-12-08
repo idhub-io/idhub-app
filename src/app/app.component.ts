@@ -49,7 +49,6 @@ export class AppComponent implements OnInit {
     private router: Router,
   ) {
     this.oauthService.configure(authCodeFlowConfig);
-    this.oauthService.setupAutomaticSilentRefresh();
     this.oauthService.events
       .pipe(filter((e) => e.type === 'token_received'))
       .subscribe(async (e) => {
