@@ -1,8 +1,9 @@
 export const translationMap = {
-  birthdate: 'Birth Date',
-  address: 'Adress',
+  birthdate: 'Birthday',
+  address: 'Address',
   gender: 'Gender',
-  given_name: 'Given Name',
+  picture: 'Picture',
+  given_name: 'First Name',
   title: 'Title',
   passport_id: 'Passport ID',
   nationality: 'Nationality',
@@ -15,7 +16,7 @@ export const translationMap = {
   // email_verified
   // picture
   name: 'Name',
-  family_name: 'Family Name',
+  family_name: 'Surname',
   login: 'Login',
   blog: 'Blog',
   company: 'Company',
@@ -29,14 +30,16 @@ export const translationMap = {
   // orgs
   // profile
   nickname: 'Nickname',
-  localizedLastName: 'Last Name',
+  localizedLastName: 'Surname',
   localizedFirstName: 'First Name',
   // pictureUri
-  street_address: 'Stree',
+  profile_url: 'Profile URL',
+  street_address: 'Street',
   country: 'Country',
   // formatted:
   locality: 'Locality',
   region: 'Region',
+  tax_id: 'Tax ID',
   postal_code: 'Postal Code',
   username: 'Username',
   covid19_vaccination: 'COVID 19 vaccinated',

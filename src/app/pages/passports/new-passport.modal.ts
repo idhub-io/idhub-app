@@ -17,7 +17,7 @@ import { ApiService } from '@services/api.service';
   template: `
     <ion-header>
       <ion-toolbar>
-        <ion-title>Create a new Passport</ion-title>
+        <ion-title>Create a new ID card</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="dismiss()"
             ><ion-icon name="close-outline"></ion-icon
@@ -27,8 +27,8 @@ import { ApiService } from '@services/api.service';
     </ion-header>
 
     <ion-content class="ion-padding">
-      <h2>Passport providers</h2>
-      <p>Choose between one of our supported passport providers.</p>
+      <h2>Identity providers</h2>
+      <p>Select the ID provider you want to use:</p>
       <div class="providers">
         <ion-button
           expand="block"

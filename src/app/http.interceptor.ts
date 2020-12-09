@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { tap, finalize } from 'rxjs/operators';
+import {tap, finalize, first, map, flatMap} from 'rxjs/operators';
 import {
   HttpInterceptor,
   HttpHandler,
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { HttpLoaderService } from '@services/http-loader.service';
 import {OAuthService} from "angular-oauth2-oidc";
+import {from} from "rxjs";
 
 @Injectable()
 export class IdHubHttpInterceptor implements HttpInterceptor {
@@ -40,7 +41,8 @@ export class IdHubHttpInterceptor implements HttpInterceptor {
 
     if (!hasToken) {
       console.log("Access token expired, try to refresh the token first.")
-      this.oauthService.refreshToken().then(res => next.handle(req));
+      return from(this.oauthService.refreshToken())
+          .pipe(first(), flatMap((res) => next.handle(req)) )
     }
     return next.handle(req);
   }

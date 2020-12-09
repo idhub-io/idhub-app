@@ -29,7 +29,7 @@ import { Router } from '@angular/router';
       <form *ngIf="passport" [formGroup]="formGroup">
         <ion-toolbar>
           <ion-list-header style="align-items: center;" slot="start">
-            Claims
+            Data user
           </ion-list-header>
           <ion-buttons slot="end">
             <ion-button color="secondary" (click)="selectAll()">
@@ -54,7 +54,6 @@ import { Router } from '@angular/router';
         <ion-list>
           <ion-list-header> Valid until </ion-list-header>
           <ion-item>
-            <ion-label>Date</ion-label>
             <ion-datetime
               [min]="minDate"
               [max]="maxDate"
