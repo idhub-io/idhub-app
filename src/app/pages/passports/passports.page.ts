@@ -129,23 +129,20 @@ import { AnimationOptions } from 'ngx-lottie';
               [options]="passportsAnimOptions"
             ></ng-lottie>
             <ion-card-header>
-              <ion-card-title
-                >Share your passport as an electronic format.</ion-card-title
-              >
+              <ion-card-title>
+                Share your digital IDs.
+              </ion-card-title>
             </ion-card-header>
 
             <ion-card-content>
               <p>
-                Simple and secure, your epassport is accessible in the cloud,
-                following you where ever you are.
+                Paperless, easy and secure, your ID card is accessible from everywhere thanks to the cloud.
               </p>
               <p>
-                No need anymore to send your passport photocopy around, in the
-                right format.
+                No need anymore to send your passport photocopy or ensure to have your paper ID with you when required.
               </p>
               <p>
-                The e-passport uses digital signing to allow you sharing your
-                information in a secured way
+                You can safely share your information thanks to the QR code.
               </p>
             </ion-card-content>
           </ion-card>
@@ -155,7 +152,7 @@ import { AnimationOptions } from 'ngx-lottie';
               color="primary"
               class="first-time"
               (click)="createPassport()"
-              >Generate your digital passport
+              >Create your digital ID.
               <ion-icon slot="end" name="add-outline"></ion-icon
             ></ion-button>
             <ion-fab-button
@@ -197,7 +194,7 @@ export class PassportsPage implements OnInit, OnDestroy {
   public error$: Observable<string> = this.store.pipe(select(selectError));
   private routeSubscription: Subscription;
   passportsAnimOptions: AnimationOptions = {
-    path: '/assets/animations/passports.json',
+    path: '/assets/animations/3168-passport.json',
   };
   passportsAnimStyle: Partial<CSSStyleDeclaration> = {
     maxWidth: '250px',
