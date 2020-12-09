@@ -129,17 +129,17 @@ import { AnimationOptions } from 'ngx-lottie';
               [options]="passportsAnimOptions"
             ></ng-lottie>
             <ion-card-header>
-              <ion-card-title>
-                Share your digital IDs.
-              </ion-card-title>
+              <ion-card-title> Share your digital IDs. </ion-card-title>
             </ion-card-header>
 
             <ion-card-content>
               <p>
-                Paperless, easy and secure, your ID card is accessible from everywhere thanks to the cloud.
+                Paperless, easy and secure, your ID card is accessible from
+                everywhere thanks to the cloud.
               </p>
               <p>
-                No need anymore to send your passport photocopy or ensure to have your paper ID with you when required.
+                No need anymore to send your passport photocopy or ensure to
+                have your paper ID with you when required.
               </p>
               <p>
                 You can safely share your information thanks to the QR code.
@@ -301,6 +301,8 @@ export class PassportsPage implements OnInit, OnDestroy {
   async createPassport() {
     const modal = await this.modalController.create({
       component: NewPassportModal,
+      mode: 'ios',
+      showBackdrop: true,
     });
     return await modal.present();
   }
@@ -308,6 +310,8 @@ export class PassportsPage implements OnInit, OnDestroy {
   async sharePassport(passportId: string) {
     const modal = await this.modalController.create({
       component: SharePassportModal,
+      mode: 'ios',
+      showBackdrop: true,
       componentProps: {
         passportId,
       },
@@ -330,6 +334,8 @@ export class PassportsPage implements OnInit, OnDestroy {
       component: PassportModal,
       cssClass: 'transparent-modal',
       swipeToClose: true,
+      mode: 'ios',
+      showBackdrop: true,
       componentProps: {
         passportId: sharedPassport.passportId,
         sharedPassportId: sharedPassport.id,
@@ -342,6 +348,8 @@ export class PassportsPage implements OnInit, OnDestroy {
   async getSharedPassports(passport: IPassportListItem) {
     const modal = await this.modalController.create({
       component: SharedPassportsModal,
+      mode: 'ios',
+      showBackdrop: true,
       componentProps: {
         passport,
       },
@@ -355,6 +363,8 @@ export class PassportsPage implements OnInit, OnDestroy {
       component: PassportModal,
       cssClass: 'transparent-modal',
       swipeToClose: true,
+      mode: 'ios',
+      showBackdrop: true,
       componentProps: {
         passportId,
       },

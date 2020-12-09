@@ -119,6 +119,7 @@ ion-item.selected {
 }
 
 .transparent-modal {
+  --backdrop-opacity: 0.9 !important;
   --background: transparent;
   ion-content::part(background),
   ion-toolbar {
@@ -131,7 +132,7 @@ ion-item.selected {
     background-image: none;
   }
   ion-backdrop {
-    opacity: 0.7;
+    opacity: 0.9;
   }
   .modal-shadow {
     box-shadow: none !important;

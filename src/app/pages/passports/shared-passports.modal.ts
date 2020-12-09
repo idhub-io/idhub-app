@@ -144,6 +144,8 @@ export class SharedPassportsModal implements OnInit {
       component: PassportModal,
       cssClass: 'transparent-modal',
       swipeToClose: true,
+      mode: 'ios',
+      showBackdrop: true,
       componentProps: {
         passportId: sharedPassport.passportId,
         sharedPassportId: sharedPassport.id,
