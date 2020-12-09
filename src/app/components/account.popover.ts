@@ -10,7 +10,7 @@ import { LogoutSuccessAction } from '@store/reducers/user';
   template: `
     <ion-list lines="none">
       <ion-item (click)="popoverCtrl.dismiss()" [routerLink]="['/passports']"
-        >Passports</ion-item
+        >IDs</ion-item
       >
       <ion-item (click)="logout()">Logout</ion-item>
     </ion-list>

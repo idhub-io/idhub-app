@@ -396,7 +396,7 @@ export class PassportsPage implements OnInit, OnDestroy {
       });
     }
     const actionSheet = await this.actionSheetController.create({
-      header: `Passport ${passport.providerId}`,
+      header: `Digital ID from ${passport.providerId}`,
       buttons: [
         ...buttons,
         {
