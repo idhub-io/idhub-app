@@ -14,11 +14,12 @@ import { AnimationOptions } from 'ngx-lottie';
       <div class="wrapper">
         <ion-card>
           <ion-card-header>
-            <ion-card-title class="ion-text-center ion-margin-bottom"
-              >Welcome to idHub</ion-card-title
+            <ion-card-title class="ion-text-center ion-margin-bottom">
+              Welcome to ID Hub
+            </ion-card-title
             >
-            <ion-card-subtitle class="ion-text-center"
-              >We simplify the creation and sharing of your e-passports
+            <ion-card-subtitle class="ion-text-center">
+              Create your digital identity and share it from your phone wallet.
             </ion-card-subtitle>
           </ion-card-header>
           <ng-lottie
