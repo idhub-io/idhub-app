@@ -23,8 +23,10 @@ export const selectPassports = createSelector(
     filter
       ? all.filter(
           (passport) =>
-            passport.providerId.indexOf(filter) >= 0 ||
-            passport.subFriendlyName.indexOf(filter) >= 0,
+            [passport.providerId, passport.subFriendlyName]
+              .map((e: string) => e.toLowerCase())
+              .join('+')
+              .indexOf(filter.toLowerCase()) >= 0,
         )
       : all,
 );
