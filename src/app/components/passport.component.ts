@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { IPassport } from '@models';
 import {Platform, ToastController} from '@ionic/angular';
+import {GoogleTagManagerService} from "angular-google-tag-manager";
 
 @Component({
   selector: 'app-passport',
@@ -168,12 +169,30 @@ export class PassportComponent implements OnInit, OnChanges {
   public prefersDark;
 
   claimsGroup: { title: string; claims: IPassportClaim[] }[] = [];
-  constructor(public toastController: ToastController, public platform: Platform) {}
+  constructor(
+      public toastController: ToastController,
+      public platform: Platform,
+      private gtmService: GoogleTagManagerService,
+  ) {}
 
   ngOnInit() {
     this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
         ? 'dark'
         : 'light';
+
+    if (this.sharedPassportId != null) {
+      const gtmTag = {
+        event: 'open-passport',
+        data: this.passport.providerId
+      };
+      this.gtmService.pushTag(gtmTag);
+    } else {
+      const gtmTag = {
+        event: 'open-shared-passport',
+        data: this.passport.providerId
+      };
+      this.gtmService.pushTag(gtmTag);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -324,6 +343,13 @@ export class PassportComponent implements OnInit, OnChanges {
   }
 
   getAppleLink() {
+
+    const gtmTag = {
+      event: 'apple-wallet',
+      data: this.passport.providerId
+    };
+    this.gtmService.pushTag(gtmTag);
+
     const url = `https://api.idhub.io/wallet/passports/${this.passportId}/shared/${this.sharedPassportId}/apple`;
     console.log(url)
     window.location.href = url

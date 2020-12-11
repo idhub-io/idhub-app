@@ -11,6 +11,7 @@ import {
 import { first } from 'rxjs/operators';
 import { ProvidersRequestAction } from '@store/reducers/providers';
 import { ApiService } from '@services/api.service';
+import {GoogleTagManagerService} from "angular-google-tag-manager";
 
 @Component({
   selector: 'new-passport-modal',
@@ -70,6 +71,7 @@ export class NewPassportModal implements OnInit {
     private modalCtrl: ModalController,
     protected store: Store<IState>,
     protected apiService: ApiService,
+    private gtmService: GoogleTagManagerService,
   ) {}
 
   public prefersDark;
@@ -90,6 +92,11 @@ export class NewPassportModal implements OnInit {
     const { redirectUri } = await this.apiService
       .createPassport(providerId)
       .toPromise();
+    const gtmTag = {
+      event: 'create-passport',
+      data: providerId,
+    };
+    this.gtmService.pushTag(gtmTag);
     window.location.href = redirectUri;
   }
 

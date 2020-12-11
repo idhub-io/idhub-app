@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { IPassport, IState } from '@models';
 import { Store } from '@ngrx/store';
 import { ApiService } from '@services/api.service';
+import {GoogleTagManagerService} from "angular-google-tag-manager";
 
 @Component({
   selector: 'new-passport-modal',
@@ -51,6 +52,7 @@ export class PassportModal implements OnInit {
     private modalCtrl: ModalController,
     protected store: Store<IState>,
     protected apiService: ApiService,
+    private gtmService: GoogleTagManagerService,
   ) {}
 
   async ngOnInit() {
@@ -64,6 +66,11 @@ export class PassportModal implements OnInit {
 
     if (valid) {
       this.passport = passport;
+      const gtmTag = {
+        event: 'show-passport',
+        data: passport.providerId
+      };
+      this.gtmService.pushTag(gtmTag);
     }
 
     if (token) {

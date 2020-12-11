@@ -2,6 +2,7 @@ import { OAuthService, AuthConfig } from 'angular-oauth2-oidc';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AnimationOptions } from 'ngx-lottie';
+import {GoogleTagManagerService} from "angular-google-tag-manager";
 
 @Component({
   selector: 'passport-page',
@@ -54,6 +55,7 @@ export class LoginPage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private oauthService: OAuthService,
+    private gtmService: GoogleTagManagerService,
   ) {}
 
   async ngOnInit() {
@@ -73,6 +75,10 @@ export class LoginPage implements OnInit {
     await this.oauthService.loadDiscoveryDocumentAndLogin();
     // this.oauthService.tryLoginCodeFlow();
     console.log("Go the passports page");
+    const gtmTag = {
+      event: 'login'
+    };
+    this.gtmService.pushTag(gtmTag);
     this.router.navigate(['passports']);
   }
 }

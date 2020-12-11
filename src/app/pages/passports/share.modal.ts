@@ -10,6 +10,7 @@ import { ApiService } from '@services/api.service';
 import { translationMap } from 'src/app/utils/claims';
 import { SharedPassportCreationRequestAction } from '@store/reducers/shared-passports';
 import { Router } from '@angular/router';
+import {GoogleTagManagerService} from "angular-google-tag-manager";
 
 @Component({
   selector: 'new-passport-modal',
@@ -97,6 +98,7 @@ export class SharePassportModal implements OnInit {
     protected store: Store<IState>,
     protected apiService: ApiService,
     private fb: FormBuilder,
+    private gtmService: GoogleTagManagerService,
   ) {}
 
   async ngOnInit() {
@@ -143,6 +145,12 @@ export class SharePassportModal implements OnInit {
     const filteredClaims = claims
       .filter((claim) => claim.checked)
       .map((claim) => claim.id);
+
+    const gtmTag = {
+      event: 'share-passport',
+      data: this.passport.providerId
+    };
+    this.gtmService.pushTag(gtmTag);
 
     this.store.dispatch(
       SharedPassportCreationRequestAction({
