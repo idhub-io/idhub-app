@@ -1,15 +1,17 @@
-import { environment } from './../environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Store } from '@ngrx/store';
+import { filter } from 'rxjs/operators';
+import { GoogleTagManagerService } from 'angular-google-tag-manager';
+
 import { IState, IUser } from '@models';
 import { LoginSuccessAction } from '@store/reducers/user';
 import { PWAService } from '@services/pwa.service';
-import { filter } from 'rxjs/operators';
+import { environment } from './../environments/environment';
 
 export const authCodeFlowConfig: AuthConfig = {
   issuer: environment.ssoUrl + '/auth/realms/external',
@@ -43,7 +45,7 @@ export class AppComponent implements OnInit {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private oauthService: OAuthService,
-    private route: ActivatedRoute,
+    private gtmService: GoogleTagManagerService,
     private store: Store<IState>,
     private pwa: PWAService,
     private router: Router,
@@ -56,6 +58,17 @@ export class AppComponent implements OnInit {
           replaceUrl: true,
         });
       });
+    this.router.events.forEach((item) => {
+      if (item instanceof NavigationEnd) {
+        console.log({ item });
+        const gtmTag = {
+          event: 'page',
+          pageName: item.url,
+        };
+
+        this.gtmService.pushTag(gtmTag);
+      }
+    });
     this.initializeApp();
   }
 

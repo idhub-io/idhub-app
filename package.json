@@ -32,6 +32,7 @@
     "@ngrx/schematics": "^10.0.0",
     "@ngrx/store": "^10.0.0",
     "@ngrx/store-devtools": "^10.0.0",
+    "angular-google-tag-manager": "^1.2.4",
     "angular-oauth2-oidc": "^10.0.3",
     "angular-oauth2-oidc-jwks": "^9.0.0",
     "angularx-qrcode": "^10.0.11",

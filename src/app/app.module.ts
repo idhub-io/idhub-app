@@ -17,6 +17,7 @@ import {
   ServiceWorkerModule,
   SwRegistrationOptions,
 } from '@angular/service-worker';
+import { GoogleTagManagerModule } from 'angular-google-tag-manager';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -55,6 +56,9 @@ export function playerFactory() {
       enabled: environment.production,
     }),
     LottieModule.forRoot({ player: playerFactory }),
+    GoogleTagManagerModule.forRoot({
+      id: environment.GTM_ID,
+    }),
   ],
   providers: [
     StatusBar,
@@ -68,10 +72,10 @@ export function playerFactory() {
       deps: [Platform],
     },
     {
-       provide: HTTP_INTERCEPTORS,
-       useClass: IdHubHttpInterceptor,
-       multi: true,
-     },
+      provide: HTTP_INTERCEPTORS,
+      useClass: IdHubHttpInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
