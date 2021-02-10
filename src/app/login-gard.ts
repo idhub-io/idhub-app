@@ -17,6 +17,8 @@ export class LoginGuard implements CanActivate {
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ) {
+      await this.oauthService.loadDiscoveryDocument();
+
     if (
       this.oauthService.hasValidAccessToken() &&
       this.oauthService.hasValidIdToken()
