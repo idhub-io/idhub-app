@@ -14,7 +14,7 @@ import { PWAService } from '@services/pwa.service';
 import { environment } from './../environments/environment';
 
 export const authCodeFlowConfig: AuthConfig = {
-  issuer: environment.ssoUrl + '/auth/realms/external',
+  issuer: environment.issuer + '/auth/realms/external',
 
   redirectUri: window.location.origin + '/login',
   //  window.location.origin + '/exchange-code',
