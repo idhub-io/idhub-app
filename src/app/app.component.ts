@@ -31,6 +31,7 @@ export const authCodeFlowConfig: AuthConfig = {
   scope: 'openid wallet passport offline_access',
   useSilentRefresh: true,
   showDebugInformation: true,
+  strictDiscoveryDocumentValidation: false
   // oidc: false,
 };
 @Component({
