@@ -44,5 +44,7 @@ jobs:
 
           images-names: "idhub-app"
 
-
+          gpg-enabled: true
+          gpg-key-id: ${{ secrets.GPG_KEY_ID }}
+          gpg-key: ${{ secrets.GPG_KEY }}
 
